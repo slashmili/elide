@@ -9,7 +9,7 @@ use Mix.Config
 config :elide, Elide.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
-  secret_key_base: "Pz4H15PbLXZEiG0ksTNXsKU+7myk/jXdmJZCGz2G/g1SLZeyugH9gB5DJPHR7mLY",
+  secret_key_base: "7aanOCmGwaKZVOA6+OwH5VjIHqR4aU6W4DEeO0GPpPRMU9JtVFAu/c7tj5HDIBJ0",
   render_errors: [accepts: ~w(html json)],
   pubsub: [name: Elide.PubSub,
            adapter: Phoenix.PubSub.PG2]

@@ -18,8 +18,9 @@ defmodule Elide.Web do
 
   def model do
     quote do
-      use Ecto.Model
+      use Ecto.Schema
 
+      import Ecto
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2]
     end
@@ -30,10 +31,11 @@ defmodule Elide.Web do
       use Phoenix.Controller
 
       alias Elide.Repo
-      import Ecto.Model
+      import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Elide.Router.Helpers
+      import Elide.Gettext
     end
   end
 
@@ -48,6 +50,8 @@ defmodule Elide.Web do
       use Phoenix.HTML
 
       import Elide.Router.Helpers
+      import Elide.ErrorHelpers
+      import Elide.Gettext
     end
   end
 
@@ -62,8 +66,9 @@ defmodule Elide.Web do
       use Phoenix.Channel
 
       alias Elide.Repo
-      import Ecto.Model
+      import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
+      import Elide.Gettext
     end
   end
 

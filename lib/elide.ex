@@ -10,7 +10,7 @@ defmodule Elide do
       # Start the endpoint when the application starts
       supervisor(Elide.Endpoint, []),
       # Start the Ecto repository
-      worker(Elide.Repo, []),
+      supervisor(Elide.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(Elide.Worker, [arg1, arg2, arg3]),
     ]

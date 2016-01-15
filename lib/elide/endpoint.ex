@@ -33,7 +33,7 @@ defmodule Elide.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_elide_key",
-    signing_salt: "LRBTitge"
+    signing_salt: "9ZZtjRAl"
 
   plug Elide.Router
 end
