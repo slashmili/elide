@@ -1,6 +1,7 @@
 defmodule Elide.AuthController do
   use Elide.Web, :controller
   alias Elide.OAuth2.Google
+  alias Elide.User
 
   def index(conn, %{"provider" => provider}) do
     redirect conn, external: authorize_url!(provider)
@@ -12,24 +13,36 @@ defmodule Elide.AuthController do
   defp get_token!("google", code),   do: Google.get_token!(code: code)
 
   defp get_user!("google", token) do
+    #TODO: handle in case of error like
+    #%{"error" => %{"code" => 401,
+    #"errors" => [%{"domain" => "global", "location" => "Authorization",
+    #"locationType" => "header", "message" => "Invalid Credentials",
+    #"reason" => "authError"}], "message" => "Invalid Credentials"}}
+
     {:ok, %{body: user}} = OAuth2.AccessToken.get(token, "https://www.googleapis.com/plus/v1/people/me/openIdConnect")
-    %{name: user["name"], avatar: user["picture"]}
+    first_or_create(
+      user["email"],
+      user["sub"],
+      "google",
+      user["given_name"] <> user["family_name"],
+      user["picture"]
+    )
+  end
+
+  defp first_or_create(email, uid, provider, fullname, avatar) do
+    case Repo.get_by(User, %{email: email, uid: uid, provider: provider}) do
+      nil ->
+        {ok, user} = Repo.insert(%User{email: email, uid: uid, provider: provider, fullname: fullname, avatar: avatar})
+        user
+      user -> user
+    end
   end
 
   def callback(conn, %{"provider" => provider, "code" => code}) do
-    # Exchange an auth code for an access token
     token = get_token!(provider, code)
 
-    # Request the user's data with the access token
     user = get_user!(provider, token)
 
-    # Store the user in the session under `:current_user` and redirect to /.
-    # In most cases, we'd probably just store the user's ID that can be used
-    # to fetch from the database. In this case, since this example app has no
-    # database, I'm just storing the user map.
-    #
-    # If you need to make additional resource requests, you may want to store
-    # the access token as well.
     conn
     |> put_session(:current_user, user)
     |> put_session(:access_token, token.access_token)
