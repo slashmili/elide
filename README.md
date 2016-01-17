@@ -1,6 +1,6 @@
 # Elide
 
-[![Build Status](https://travis-ci.org/slashmili/elide.svg?branch=master)](https://travis-ci.org/slashmili/elide)
+[![Build Status](https://travis-ci.org/slashmili/elide.svg?branch=develop)](https://travis-ci.org/slashmili/elide)
 
 To start your Phoenix app:
 
