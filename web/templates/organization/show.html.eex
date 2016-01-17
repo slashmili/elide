@@ -1,0 +1,18 @@
+<h2>Show organization</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @organization.name %>
+  </li>
+
+  <li>
+    <strong>Owner:</strong>
+    <%= @organization.owner_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: organization_path(@conn, :edit, @organization) %>
+<%= link "Back", to: organization_path(@conn, :index) %>

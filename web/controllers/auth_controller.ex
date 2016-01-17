@@ -1,4 +1,5 @@
 defmodule Elide.AuthController do
+  #TODO: clean up and merge with Elide.Auth
   use Elide.Web, :controller
   alias Elide.OAuth2.Google
   alias Elide.User
@@ -20,6 +21,7 @@ defmodule Elide.AuthController do
     #"reason" => "authError"}], "message" => "Invalid Credentials"}}
 
     {:ok, %{body: user}} = OAuth2.AccessToken.get(token, "https://www.googleapis.com/plus/v1/people/me/openIdConnect")
+    #TODO: send keyword/map
     first_or_create(
       user["email"],
       user["sub"],
@@ -32,6 +34,7 @@ defmodule Elide.AuthController do
   defp first_or_create(email, uid, provider, fullname, avatar) do
     case Repo.get_by(User, %{email: email, uid: uid, provider: provider}) do
       nil ->
+        #TODO: make a changeset
         {ok, user} = Repo.insert(%User{email: email, uid: uid, provider: provider, fullname: fullname, avatar: avatar})
         user
       user -> user
@@ -44,8 +47,9 @@ defmodule Elide.AuthController do
     user = get_user!(provider, token)
 
     conn
-    |> put_session(:current_user, user)
-    |> put_session(:access_token, token.access_token)
+    |> assign(:current_user, user)
+    |> put_session(:user_id, user.id)
+    |> configure_session(renew: true)
     |> redirect(to: "/")
   end
 

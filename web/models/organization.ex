@@ -1,18 +1,15 @@
-defmodule Elide.User do
+defmodule Elide.Organization do
   use Elide.Web, :model
 
-  schema "users" do
-    field :email, :string
-    field :fullname, :string
-    field :avatar, :string
-    field :provider, :string
-    field :uid, :string
+  schema "organizations" do
+    field :name, :string
+    belongs_to :owner, Elide.Owner
 
     timestamps
   end
 
-  @required_fields ~w(email fullname provider uid)
-  @optional_fields ~w(avatar)
+  @required_fields ~w(name owner_id)
+  @optional_fields ~w()
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -23,5 +20,9 @@ defmodule Elide.User do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def owned_by(user) do
+    from o in __MODULE__, where: o.owner_id == ^user.id
   end
 end
