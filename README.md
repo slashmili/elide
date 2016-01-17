@@ -1,5 +1,7 @@
 # Elide
 
+[![Build Status](https://travis-ci.org/slashmili/elide.svg?branch=master)](https://travis-ci.org/slashmili/elide)
+
 To start your Phoenix app:
 
   1. Install dependencies with `mix deps.get`
