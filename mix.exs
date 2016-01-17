@@ -37,7 +37,9 @@ defmodule Elide.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:oauth2, "~> 0.5"}]
+     {:oauth2, "~> 0.5"},
+     {:mix_test_watch, "~> 0.2", only: :dev}
+   ]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
