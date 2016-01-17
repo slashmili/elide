@@ -1,7 +1,6 @@
 defmodule Elide.MembershipControllerTest do
   use Elide.ConnCase
 
-  alias Elide.Membership
   @valid_attrs %{role: "some content"}
   @invalid_attrs %{}
 
@@ -9,7 +8,7 @@ defmodule Elide.MembershipControllerTest do
     user = insert_user(email: "foobar@buz.com")
     organization = insert_organization(owner_id: user.id)
     conn = assign(conn(), :current_user, user)
-    conn = assign(conn(), :organization, organization)
+    conn = assign(conn, :organization, organization)
     {:ok, conn: conn, user: user}
   end
 
