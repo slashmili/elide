@@ -23,7 +23,9 @@ defmodule Elide.Router do
 
   scope "/ui", Elide do
     pipe_through :browser
-    resources "/organizations", OrganizationController
+    resources "/organizations", OrganizationController do
+      resources "/memberships", MembershipController
+    end
   end
 
   scope "/auth", Elide do

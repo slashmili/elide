@@ -1,0 +1,23 @@
+<h2>Show membership</h2>
+
+<ul>
+
+  <li>
+    <strong>User:</strong>
+    <%= @membership.user_id %>
+  </li>
+
+  <li>
+    <strong>Organization:</strong>
+    <%= @membership.organization_id %>
+  </li>
+
+  <li>
+    <strong>Role:</strong>
+    <%= @membership.role %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: organization_membership_path(@conn, :edit, 1, @membership) %>
+<%= link "Back", to: organization_membership_path(@conn, :index, 1) %>

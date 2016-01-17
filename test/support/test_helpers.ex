@@ -1,5 +1,5 @@
 defmodule Elide.TestHelpers do
-  alias Elide.Repo
+  alias Elide.{Repo, User, Organization}
 
   def insert_user(attrs \\ %{}) do
     changes = Dict.merge(%{
@@ -11,6 +11,17 @@ defmodule Elide.TestHelpers do
 
     %Elide.User{}
     |> Elide.User.changeset(changes)
+    |> Repo.insert!
+  end
+
+  def insert_organization(attrs \\ %{}) do
+    changes = Dict.merge(%{
+      name: "Foo Org",
+      user: nil
+    }, attrs)
+
+    %Organization{}
+    |> Organization.changeset(changes)
     |> Repo.insert!
   end
 end
