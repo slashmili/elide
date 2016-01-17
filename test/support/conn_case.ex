@@ -26,6 +26,7 @@ defmodule Elide.ConnCase do
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Elide.Router.Helpers
+      import Elide.TestHelpers
 
       # The default endpoint for testing
       @endpoint Elide.Endpoint

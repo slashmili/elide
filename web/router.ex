@@ -8,6 +8,7 @@ defmodule Elide.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :assign_current_user
+    plug Elide.Auth, repo: Elide.Repo
   end
 
   pipeline :api do
@@ -18,6 +19,11 @@ defmodule Elide.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+  end
+
+  scope "/ui", Elide do
+    pipe_through :browser
+    resources "/organizations", OrganizationController
   end
 
   scope "/auth", Elide do
