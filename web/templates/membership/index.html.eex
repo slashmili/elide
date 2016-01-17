@@ -1,0 +1,24 @@
+<h2>Listing memberships for <%= @conn.assigns[:organization].name %></h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>User</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for membership <- @memberships do %>
+    <tr>
+      <td><%= membership.user.fullname %></td>
+
+      <td class="text-right">
+        <%= link "Delete", to: organization_membership_path(@conn, :delete, @organization_id, membership), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New membership", to: organization_membership_path(@conn, :new, @organization_id) %>
