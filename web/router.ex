@@ -23,8 +23,8 @@ defmodule Elide.Router do
 
   scope "/ui", Elide do
     pipe_through :browser
-    resources "/organizations", OrganizationController do
-      resources "/memberships", MembershipController
+    resources "/org", OrganizationController do
+      resources "/members", MembershipController
     end
   end
 
