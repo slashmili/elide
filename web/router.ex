@@ -7,7 +7,6 @@ defmodule Elide.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :assign_current_user
     plug Elide.Auth, repo: Elide.Repo
   end
 
@@ -22,7 +21,7 @@ defmodule Elide.Router do
   end
 
   scope "/ui", Elide do
-    pipe_through :browser
+    pipe_through [:browser, :authenticate_user]
     resources "/org", OrganizationController do
       resources "/members", MembershipController
     end
@@ -40,7 +39,4 @@ defmodule Elide.Router do
   # scope "/api", Elide do
   #   pipe_through :api
   # end
-  defp assign_current_user(conn, _) do
-    assign(conn, :current_user, get_session(conn, :current_user))
-  end
 end
