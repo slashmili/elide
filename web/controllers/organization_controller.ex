@@ -5,24 +5,24 @@ defmodule Elide.OrganizationController do
 
   plug :scrub_params, "organization" when action in [:create, :update]
 
-  def get_current_user(conn) do
-    conn.assigns[:current_user]
+  def action(conn, _) do
+    apply(__MODULE__, action_name(conn),
+          [conn, conn.params, conn.assigns.current_user])
   end
 
-  def index(conn, params) do
-    organizations = Repo.all(Organization.owned_by(get_current_user(conn)))
+  def index(conn, params, user) do
+    organizations = Repo.all(Organization.owned_by(user))
     render(conn, "index.html", organizations: organizations)
   end
 
-  def new(conn, _params) do
+  def new(conn, _params, _user) do
     changeset = Organization.changeset(%Organization{})
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"organization" => organization_params}) do
-    current_user = get_current_user(conn)
+  def create(conn, %{"organization" => organization_params}, user) do
     changeset = Organization.changeset(
-      %Organization{owner_id: current_user.id},
+      %Organization{owner_id: user.id},
       organization_params
     )
 
@@ -36,23 +36,20 @@ defmodule Elide.OrganizationController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    current_user = get_current_user(conn)
-    organization = Repo.get!(Organization.owned_by(current_user), id)
+  def show(conn, %{"id" => id}, user) do
+    organization = Repo.get!(Organization.owned_by(user), id)
     render(conn, "show.html", organization: organization)
   end
 
-  def edit(conn, %{"id" => id}) do
-    current_user = get_current_user(conn)
-    organization = Repo.get!(Organization.owned_by(current_user), id)
+  def edit(conn, %{"id" => id}, user) do
+    organization = Repo.get!(Organization.owned_by(user), id)
     changeset = Organization.changeset(organization)
     render(conn, "edit.html", organization: organization, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "organization" => organization_params}) do
-    current_user = get_current_user(conn)
-    organization = Repo.get!(Organization.owned_by(current_user), id)
-    organization = %{organization | owner_id: current_user.id}
+  def update(conn, %{"id" => id, "organization" => organization_params}, user) do
+    organization = Repo.get!(Organization.owned_by(user), id)
+    organization = %{organization | owner_id: user.id}
     changeset = Organization.changeset(organization, organization_params)
 
     case Repo.update(changeset) do
@@ -65,9 +62,8 @@ defmodule Elide.OrganizationController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    current_user = get_current_user(conn)
-    organization = Repo.get!(Organization.owned_by(current_user), id)
+  def delete(conn, %{"id" => id}, user) do
+    organization = Repo.get!(Organization.owned_by(user), id)
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
