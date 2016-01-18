@@ -1,14 +1,12 @@
 defmodule Elide.OrganizationController do
   use Elide.Web, :controller
 
-  import Elide.Auth, only: [authenticate: 2]
   alias Elide.Organization
 
   plug :scrub_params, "organization" when action in [:create, :update]
-  plug :authenticate
 
   def get_current_user(conn) do
-    get_session(conn, :current_user)
+    conn.assigns[:current_user]
   end
 
   def index(conn, params) do

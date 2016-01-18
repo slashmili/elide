@@ -1,11 +1,9 @@
 defmodule Elide.MembershipController do
   use Elide.Web, :controller
 
-  import Elide.Auth, only: [authenticate: 2]
   alias Elide.{Membership, Organization, User}
 
   plug :scrub_params, "membership" when action in [:create, :update]
-  plug :authenticate
   plug :get_organization
 
   def get_organization(conn, opts) do

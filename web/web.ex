@@ -36,6 +36,7 @@ defmodule Elide.Web do
 
       import Elide.Router.Helpers
       import Elide.Gettext
+      import Elide.Auth, only: [authenticate_user: 2]
     end
   end
 
@@ -58,6 +59,8 @@ defmodule Elide.Web do
   def router do
     quote do
       use Phoenix.Router
+
+      import Elide.Auth, only: [authenticate_user: 2]
     end
   end
 
