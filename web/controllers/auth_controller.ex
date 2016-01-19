@@ -5,7 +5,9 @@ defmodule Elide.AuthController do
   alias Elide.User
 
   def index(conn, %{"provider" => provider}) do
-    redirect conn, external: authorize_url!(provider)
+    conn
+    |> redirect(external: authorize_url!(provider))
+    |> halt
   end
 
   defp authorize_url!("google"),   do: Google.authorize_url!(scope: "https://www.googleapis.com/auth/userinfo.email")
@@ -32,7 +34,7 @@ defmodule Elide.AuthController do
   end
 
   defp first_or_create(email, uid, provider, fullname, avatar) do
-    case Repo.get_by(User, %{email: email, uid: uid, provider: provider}) do
+    case Repo.get_by(User, %{email: email}) do
       nil ->
         #TODO: make a changeset
         {ok, user} = Repo.insert(%User{email: email, uid: uid, provider: provider, fullname: fullname, avatar: avatar})
