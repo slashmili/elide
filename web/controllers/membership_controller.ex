@@ -4,50 +4,53 @@ defmodule Elide.MembershipController do
   alias Elide.{Membership, Organization, User}
 
   plug :scrub_params, "membership" when action in [:create, :update]
-  plug :get_organization
 
-  def get_organization(conn, opts) do
+  def action(conn, _) do
     organization = Repo.get!(
       Organization.owned_by(conn.assigns[:current_user]),
       conn.params["organization_id"]
     )
 
-    assign(conn, :organization, organization)
+    apply(__MODULE__, action_name(conn),
+          [conn, conn.params, conn.assigns.current_user, organization])
   end
 
-  def index(conn, %{"organization_id" => organization_id}) do
+
+  def index(conn, _param, _user, org) do
     memberships = Membership.for_organization(conn.assigns[:organization])
     |> Ecto.Query.preload(:user)
     |> Repo.all
-    render(conn, "index.html", memberships: memberships, organization_id: organization_id)
+    render(conn, "index.html", memberships: memberships, organization_id: org.id)
   end
 
-  def new(conn, %{"organization_id" => organization_id}) do
+  def new(conn, _param, _user, org) do
     changeset = Membership.changeset(%Membership{})
-    render(conn, "new.html", changeset: changeset, organization_id: organization_id)
+    render(conn, "new.html", changeset: changeset, organization_id: org.id)
   end
 
-  def create(conn, %{"membership" => membership_params, "organization_id" => organization_id}) do
-    organization = conn.assigns[:organization]
-    user = Repo.get_by!(User, email: membership_params["user_email"])
+  def create(conn, %{"membership" => membership_params}, _user, org) do
+    user = Repo.get_by(User, email: membership_params["user_email"] || "")
+    user_id = user && user.id || 0
     membership_params = Dict.delete membership_params, "role"
     changeset = Membership.changeset(
-      %Membership{role: "m", user_id: user.id, organization_id: organization.id},
+      %Membership{role: "m", user_id: user_id, organization_id: org.id},
       membership_params
     )
 
-    case Repo.insert(changeset) do
+    case user && Repo.insert(changeset) do
       {:ok, _membership} ->
         conn
         |> put_flash(:info, "Membership created successfully.")
-        |> redirect(to: organization_membership_path(conn, :index, organization_id))
+        |> redirect(to: organization_membership_path(conn, :index, org.id))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset, organization_id: organization_id)
+        render(conn, "new.html", changeset: changeset, organization_id: org.id)
+      nil ->
+        render(conn, "new.html", changeset: changeset, organization_id: org.id)
     end
   end
 
-  def delete(conn, %{"id" => id, "organization_id" => organization_id}) do
-    membership = Repo.get!(Membership, id)
+  def delete(conn, %{"id" => id}, _user, org) do
+    membership = Repo.get_by!(Membership, %{id: id, organization_id: org.id})
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
@@ -55,6 +58,6 @@ defmodule Elide.MembershipController do
 
     conn
     |> put_flash(:info, "Membership deleted successfully.")
-    |> redirect(to: organization_membership_path(conn, :index, organization_id))
+    |> redirect(to: organization_membership_path(conn, :index, org.id))
   end
 end
