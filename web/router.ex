@@ -27,11 +27,11 @@ defmodule Elide.Router do
     end
   end
 
-  scope "/auth", Elide do
+  scope "/users/auth", Elide do
     pipe_through :browser
 
-    get "/:provider", AuthController, :index
-    get "/:provider/callback", AuthController, :callback
+    get "/:provider", UserController, :provider
+    get "/:provider/callback", UserController, :callback
     #delete "/logout", AuthController, :delete
   end
 
