@@ -65,7 +65,7 @@ defmodule Elide.AuthTest do
   end
 
   test "redirect to google when request for auth", %{conn: conn} do
-    conn = get conn, auth_path(conn, :index, "google")
+    conn = get conn, user_path(conn, :provider, "google")
 
     assert conn.halted
   end
@@ -84,10 +84,8 @@ defmodule Elide.AuthTest do
   test "new user returns back to callback url", %{conn: conn} do
     email = "foobar#{:rand.uniform}@gmail.com"
     resp_body = get_google_body_resp(email)
-    with_mock OAuth2.AccessToken, [get: fn(_token, _url) -> {:ok, %{body: resp_body}} end] do
-      with_mock Elide.OAuth2.Google, [get_token!: fn(_) -> "mocked_token" end] do
-        get conn, auth_path(conn, :callback, "google", %{code: "boo"})
-      end
+    with_mock Elide.OAuth2.Google, [get_token!: fn(_) -> "mocked_token" end, get_user_details!: fn(_) -> resp_body end] do
+      get conn, user_path(conn, :callback, "google", %{code: "boo"})
     end
 
     user = Repo.get_by(Elide.User, %{email: email})
@@ -98,10 +96,8 @@ defmodule Elide.AuthTest do
   test "existing user returns back to callback url", %{conn: conn} do
     user = insert_user()
     resp_body = get_google_body_resp(user.email)
-    with_mock OAuth2.AccessToken, [get: fn(_token, _url) -> {:ok, %{body: resp_body}} end] do
-      with_mock Elide.OAuth2.Google, [get_token!: fn(_) -> "mocked_token" end] do
-        get conn, auth_path(conn, :callback, "google", %{code: "boo"})
-      end
+    with_mock Elide.OAuth2.Google, [get_token!: fn(_) -> "mocked_token" end, get_user_details!: fn(_) -> resp_body end] do
+      get conn, user_path(conn, :callback, "google", %{code: "boo"})
     end
 
     users_with_same_email = Repo.all(from u in Elide.User, where: u.email == ^user.email)

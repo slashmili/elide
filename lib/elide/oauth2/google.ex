@@ -6,6 +6,8 @@ defmodule Elide.OAuth2.Google do
 
   alias OAuth2.Strategy.AuthCode
 
+  @google_open_id_api "https://www.googleapis.com/plus/v1/people/me/openIdConnect"
+
   defp config do
     [strategy: __MODULE__,
      site: "https://accounts.google.com",
@@ -25,7 +27,7 @@ defmodule Elide.OAuth2.Google do
     OAuth2.Client.authorize_url!(client(), params)
   end
 
-  def get_token!(params \\ [], headers \\ []) do
+  def get_token!(params \\ [], _headers \\ []) do
     OAuth2.Client.get_token!(client(), params)
   end
 
@@ -39,5 +41,10 @@ defmodule Elide.OAuth2.Google do
     client
     |> put_header("Accept", "application/json")
     |> AuthCode.get_token(params, headers)
+  end
+
+  def get_user_details!(token) do
+    {:ok, %{body: user_details}} = OAuth2.AccessToken.get(token, @google_open_id_api)
+    user_details
   end
 end
