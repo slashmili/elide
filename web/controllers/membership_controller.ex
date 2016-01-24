@@ -17,15 +17,16 @@ defmodule Elide.MembershipController do
 
 
   def index(conn, _param, _user, org) do
-    memberships = Membership.for_organization(conn.assigns[:organization])
-    |> Ecto.Query.preload(:user)
-    |> Repo.all
-    render(conn, "index.html", memberships: memberships, organization_id: org.id)
+    memberships =
+      Membership.for_organization(org)
+      |> Ecto.Query.preload(:user)
+      |> Repo.all
+    render(conn, "index.html", memberships: memberships, org: org)
   end
 
   def new(conn, _param, _user, org) do
     changeset = Membership.changeset(%Membership{})
-    render(conn, "new.html", changeset: changeset, organization_id: org.id)
+    render(conn, "new.html", changeset: changeset, org: org)
   end
 
   def create(conn, %{"membership" => membership_params}, _user, org) do
@@ -43,9 +44,9 @@ defmodule Elide.MembershipController do
         |> put_flash(:info, "Membership created successfully.")
         |> redirect(to: organization_membership_path(conn, :index, org.id))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset, organization_id: org.id)
+        render(conn, "new.html", changeset: changeset, org: org)
       nil ->
-        render(conn, "new.html", changeset: changeset, organization_id: org.id)
+        render(conn, "new.html", changeset: changeset, org: org)
     end
   end
 
