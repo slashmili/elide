@@ -7,12 +7,11 @@ defmodule Elide.MembershipControllerTest do
     user = insert_user(email: "foobar@buz.com")
     organization = insert_organization(owner_id: user.id)
     conn = assign(conn(), :current_user, user)
-    conn = assign(conn, :organization, organization)
     {:ok, conn: conn, user: user, org: organization}
   end
 
-  test "lists all entries on index", %{conn: conn} do
-    conn = get conn, organization_membership_path(conn, :index, conn.assigns[:organization].id)
+  test "lists all entries on index", %{conn: conn, user: _user, org: org} do
+    conn = get conn, organization_membership_path(conn, :index, org.id)
     assert html_response(conn, 200) =~ "Listing memberships"
   end
 
