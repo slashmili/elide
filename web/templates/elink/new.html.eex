@@ -1,0 +1,33 @@
+<h2>New elink</h2>
+
+<%= form_for @changeset, elink_path(@conn, :create), fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label :urls, :url_1, class: "control-label" %>
+    <%= text_input :urls, :url_1, class: "form-control" %>
+  </div>
+
+  <%= inputs_for f, :urls, fn(_) -> %>
+    <%= text_input f, :url %>
+  <% end %>
+
+  <div class="form-group">
+    <%= label :urls, :url_2, class: "control-label" %>
+    <%= text_input :urls, :url_2, class: "form-control" %>
+  </div>
+
+
+  <%= hidden_input f, :user_id, value: @conn.assigns.current_user.id %>
+
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link "Back", to: elink_path(@conn, :index) %>

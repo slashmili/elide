@@ -1,5 +1,9 @@
 defmodule Elide.TestHelpers do
-  alias Elide.{Repo, User, Organization}
+  alias Elide.{Repo, User, Organization, Domain}
+
+  def get_uniqe_id() do
+    Base.encode16(:crypto.rand_bytes(8))
+  end
 
   def insert_user(attrs \\ %{}) do
     changes = Dict.merge(%{
@@ -24,5 +28,14 @@ defmodule Elide.TestHelpers do
     |> Organization.changeset(changes)
     |> Repo.insert!
   end
-end
 
+  def insert_domain(attrs \\ %{}) do
+    changes = Dict.merge(%{
+      domain: "#{get_uniqe_id}.com",
+    }, attrs)
+
+    %Domain{}
+    |> Domain.changeset(changes)
+    |> Repo.insert!
+  end
+end

@@ -25,6 +25,7 @@ defmodule Elide.Router do
     resources "/org", OrganizationController do
       resources "/members", MembershipController
     end
+    resources "/elinks", ElinkController
   end
 
   scope "/users/auth", Elide do

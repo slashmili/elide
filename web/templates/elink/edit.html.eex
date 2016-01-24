@@ -1,0 +1,6 @@
+<h2>Edit elink</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: elink_path(@conn, :update, @elink) %>
+
+<%= link "Back", to: elink_path(@conn, :index) %>
