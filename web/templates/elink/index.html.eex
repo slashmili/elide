@@ -3,8 +3,7 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Slug</th>
-      <th>Domain</th>
+      <th>Short</th>
       <th>User</th>
       <th>Organization</th>
 
@@ -14,8 +13,11 @@
   <tbody>
 <%= for elink <- @elinks do %>
     <tr>
-      <td><%= elink.slug %></td>
-      <td><%= elink.domain_id %></td>
+      <td>
+        <a href="http://<%= Elide.Elink.short_url(elink) %>">
+          <%= Elide.Elink.short_url(elink) %>
+        </a>
+      </td>
       <td><%= elink.user_id %></td>
       <td><%= elink.organization_id %></td>
 

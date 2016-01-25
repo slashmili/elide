@@ -24,4 +24,20 @@ defmodule Elide.Elink do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def slug(elink) do
+    s = Hashids.new(min_len: 5)
+    Hashids.encode(s, elink.id)
+  end
+
+  def by_slug(slug) do
+    s = Hashids.new(min_len: 5)
+    {:ok, [id]} = Hashids.decode(s, slug)
+    from e in __MODULE__,
+      where: e.id == ^id
+  end
+
+  def short_url(elink) do
+    "#{elink.domain.domain}/#{slug(elink)}"
+  end
 end

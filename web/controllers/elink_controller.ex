@@ -6,7 +6,7 @@ defmodule Elide.ElinkController do
   plug :scrub_params, "elink" when action in [:update]
 
   def index(conn, _params) do
-    elinks = Repo.all(Elink)
+    elinks = Repo.all(Elink) |> Repo.preload(:domain)
     render(conn, "index.html", elinks: elinks)
   end
 
@@ -31,6 +31,14 @@ defmodule Elide.ElinkController do
     |> redirect(to: elink_path(conn, :index))
   end
 
+  def go(conn, %{"slug" => slug}) do
+    elink = Repo.one(Elink.by_slug(slug)) |> Repo.preload(:urls)
+    url = elink.urls |> Enum.shuffle |> List.first
+    conn
+    |> redirect(external: url.link)
+    |> halt
+  end
+
   defp get_domain(nil) do
     [default_domain | _ ] = Repo.all(Domain)
     default_domain
@@ -42,7 +50,10 @@ defmodule Elide.ElinkController do
 
   def create_url(elink, url) do
     {_, link} = url
-    changeset = build_assoc(elink, :urls, %{link: link})
+    changeset =
+      elink
+      |> build_assoc(:urls)
+      |> Url.changeset(%{link: link})
     {:ok, _url} = Repo.insert(changeset)
   end
 end

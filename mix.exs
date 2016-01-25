@@ -39,7 +39,8 @@ defmodule Elide.Mixfile do
      {:cowboy, "~> 1.0"},
      {:oauth2, "~> 0.5"},
      {:mix_test_watch, "~> 0.2", only: :dev},
-     {:mock, "~> 0.1.1", only: :test}
+     {:mock, "~> 0.1.1", only: :test},
+     {:hashids, "~> 2.0"},
    ]
   end
 
