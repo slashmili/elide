@@ -30,6 +30,13 @@ defmodule Elide.Elink do
     Hashids.encode(s, elink.id)
   end
 
+  def by_slug(slug) do
+    s = Hashids.new(min_len: 5)
+    {:ok, [id]} = Hashids.decode(s, slug)
+    from e in __MODULE__,
+      where: e.id == ^id
+  end
+
   def short_url(elink) do
     "#{elink.domain.domain}/#{slug(elink)}"
   end
