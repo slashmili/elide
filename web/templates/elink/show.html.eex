@@ -1,0 +1,28 @@
+<h2>Show elink</h2>
+
+<ul>
+
+  <li>
+    <strong>Slug:</strong>
+    <%= @elink.slug %>
+  </li>
+
+  <li>
+    <strong>Domain:</strong>
+    <%= @elink.domain_id %>
+  </li>
+
+  <li>
+    <strong>User:</strong>
+    <%= @elink.user_id %>
+  </li>
+
+  <li>
+    <strong>Organization:</strong>
+    <%= @elink.organization_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: elink_path(@conn, :edit, @elink) %>
+<%= link "Back", to: elink_path(@conn, :index) %>
