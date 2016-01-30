@@ -17,7 +17,7 @@ defmodule Elide.ElinkControllerTest do
 
   test "renders form for new resources", %{conn: conn} do
     conn = get conn, elink_path(conn, :new)
-    assert html_response(conn, 200) =~ "New elink"
+    assert html_response(conn, 200) =~ "New Elink"
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn, domain: domain} do

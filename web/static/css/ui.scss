@@ -1,3 +1,18 @@
+@mixin elink-time {
+    time{
+        font-size: 11px;
+        color: #9b9b9b;
+        text-transform: uppercase;
+    }
+}
+
+@mixin elink-strip-ul {
+    ul {
+        list-style-type: none;
+        padding:0; margin:0;
+    }
+}
+
 .elide-mem-ui {
     $elink-background-hover: #eff1f4;
     .elinks {
@@ -16,12 +31,7 @@
             border-bottom-style: solid;
             border-bottom-color: $elink-background-hover;
             border-bottom-width: 1px;
-            time {
-                font-size: 11px;
-                color: #9b9b9b;
-                text-transform: uppercase;
-            }
-
+            @include elink-time;
             header {
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -29,15 +39,18 @@
                 font-size: 16px;
                 line-height: 1.2;
             }
-            ul {
-                list-style-type: none;
-                padding:0; margin:0;
-            }
+            @include elink-strip-ul;
             li {
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
                 -webkit-line-clamp: 2;
             }
+            button {
+                outline: 0;
+                background: none;
+                border: none;
+            }
+
             marked {
                 color: #dc635d;
                 font-weight: 600;
@@ -45,7 +58,19 @@
 
             figure {
                 float: right;
+                display: none;
             }
+        }
+    }
+    .elink-new {
+        .long-url {
+            width: 350px;
+            height: 31px;
+        }
+        .button {
+            outline: 0;
+            background: none;
+            border: none;
         }
     }
 }

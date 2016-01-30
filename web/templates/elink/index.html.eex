@@ -12,14 +12,20 @@
           </ul>
         </header>
         <footer>
-          <marked><%= Elide.Elink.short_url(elink) %></marked>
+          <button class="short-url-copy" title="Copied!" data-clipboard-text="http://<%= Elide.Elink.short_url(elink) %>">
+            <marked><%= Elide.Elink.short_url(elink) %></marked>
+            <i class="glyphicon glyphicon-copy"></i>
+          </button>
           <figure>0 <i class="glyphicon glyphicon-stats"></i></figure>
         </footer>
     </article>
 <% end %>
   </section>
-  <section class="col-md-8">
-    boo
+  <section class="elink-new col-md-8">
+<%= render "new.html", changeset: @changeset,
+                       conn: @conn,
+                       action: elink_path(@conn, :create) %>
+
+
   </section>
 </div>
-<%= link "New elink", to: elink_path(@conn, :new) %>
