@@ -1,34 +1,25 @@
-<h2>Listing elinks</h2>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Short</th>
-      <th>User</th>
-      <th>Organization</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
+<h2>Your Links</h2>
+<div class="row">
+  <section class="elinks col-md-4">
 <%= for elink <- @elinks do %>
-    <tr>
-      <td>
-        <a href="http://<%= Elide.Elink.short_url(elink) %>">
-          <%= Elide.Elink.short_url(elink) %>
-        </a>
-      </td>
-      <td><%= elink.user_id %></td>
-      <td><%= elink.organization_id %></td>
-
-      <td class="text-right">
-        <%= link "Show", to: elink_path(@conn, :show, elink), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: elink_path(@conn, :edit, elink), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: elink_path(@conn, :delete, elink), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
+    <article class="elink">
+      <time><%= elink.inserted_at %></time>
+        <header>
+          <ul>
+  <%= for url <- elink.urls do %>
+            <li><%= url.link %></li>
+  <% end %>
+          </ul>
+        </header>
+        <footer>
+          <marked><%= Elide.Elink.short_url(elink) %></marked>
+          <figure>0 <i class="glyphicon glyphicon-stats"></i></figure>
+        </footer>
+    </article>
 <% end %>
-  </tbody>
-</table>
-
+  </section>
+  <section class="col-md-8">
+    boo
+  </section>
+</div>
 <%= link "New elink", to: elink_path(@conn, :new) %>

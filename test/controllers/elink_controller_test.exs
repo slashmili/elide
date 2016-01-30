@@ -12,7 +12,7 @@ defmodule Elide.ElinkControllerTest do
 
   test "lists all entries on index", %{conn: conn, user: _user} do
     conn = get conn, elink_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing elinks"
+    assert html_response(conn, 200) =~ "Your Links"
   end
 
   test "renders form for new resources", %{conn: conn} do
