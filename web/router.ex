@@ -14,6 +14,10 @@ defmodule Elide.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :ui do
+    plug :put_layout, {Elide.UiLayoutView, "app.html"}
+  end
+
   scope "/", Elide do
     pipe_through :browser # Use the default browser stack
 
@@ -22,7 +26,7 @@ defmodule Elide.Router do
   end
 
   scope "/ui", Elide do
-    pipe_through [:browser, :authenticate_user]
+    pipe_through [:browser, :authenticate_user, :ui]
     resources "/org", OrganizationController do
       resources "/members", MembershipController
     end

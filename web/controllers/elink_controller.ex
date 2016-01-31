@@ -6,8 +6,13 @@ defmodule Elide.ElinkController do
   plug :scrub_params, "elink" when action in [:update]
 
   def index(conn, _params) do
-    elinks = Repo.all(Elink) |> Repo.preload(:domain)
-    render(conn, "index.html", elinks: elinks)
+    changeset = Elink.changeset(%Elink{})
+    elinks =
+      Repo.all(Elink)
+      |> Repo.preload(:domain)
+      |> Repo.preload(:urls)
+      |> Repo.preload(:organization)
+    render(conn, "index.html", elinks: elinks, changeset: changeset)
   end
 
   def new(conn, _params) do
