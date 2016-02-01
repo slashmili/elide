@@ -17,11 +17,9 @@ defmodule Elide.ElinkServer do
     if has_invalid_url?(urls) do
       {:reply, {:error, prepare_urls_changeset(urls)}, state}
     else
-      elink_params = %{}
-
       elink_result =
         %Elink{user_id: opts[:user].id, domain_id: opts[:domain].id}
-        |> Elink.changeset(elink_params)
+        |> Elink.changeset(%{})
         |> Repo.insert
 
       case elink_result do

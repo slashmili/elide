@@ -35,7 +35,7 @@ defmodule Elide.ElinkController do
         conn
         |> put_flash(:info, "Elink created successfully.")
         |> redirect(to: elink_path(conn, :index))
-      {:error, changesets} ->
+      {:error, _changesets} ->
         #TODO: handle showing error from list of changeset
         throw :not_implemented
     end
