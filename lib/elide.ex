@@ -11,8 +11,7 @@ defmodule Elide do
       supervisor(Elide.Endpoint, []),
       # Start the Ecto repository
       supervisor(Elide.Repo, []),
-      # Here you could define other workers and supervisors as children
-      # worker(Elide.Worker, [arg1, arg2, arg3]),
+      worker(Elide.ElinkServer, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
