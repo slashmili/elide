@@ -24,16 +24,21 @@ defmodule Elide.ElinkController do
     user = conn.assigns[:current_user]
 
     domain = get_domain(elink_params["domain_id"])
-    changeset = Elink.changeset(%Elink{user_id: user.id, domain_id: domain.id}, elink_params)
-    {:ok, elink} = Repo.insert(changeset)
+    elink_result = Elide.ElinkServer.create_elink(
+      domain: domain,
+      user: user,
+      urls: urls |> Map.values
+    )
 
-
-    #TODO: handle failures
-    Enum.each(urls, &create_url(elink, &1))
-
-    conn
-    |> put_flash(:info, "Elink created successfully.")
-    |> redirect(to: elink_path(conn, :index))
+    case elink_result do
+      {:ok, _elink} ->
+        conn
+        |> put_flash(:info, "Elink created successfully.")
+        |> redirect(to: elink_path(conn, :index))
+      {:error, _changesets} ->
+        #TODO: handle showing error from list of changeset
+        throw :not_implemented
+    end
   end
 
   def go(conn, %{"slug" => slug}) do
