@@ -25,11 +25,19 @@ defmodule Elide.Elink do
     |> cast(params, @required_fields, @optional_fields)
   end
 
+  @doc """
+  Returns short url hash based on elink
+  """
   def slug(elink) do
     s = Hashids.new(min_len: 5)
     Hashids.encode(s, elink.id)
   end
 
+  @doc """
+  Returns query based on short hash url
+
+  This query should return only one `Elink` item
+  """
   def by_slug(slug) do
     s = Hashids.new(min_len: 5)
     {:ok, [id]} = Hashids.decode(s, slug)
@@ -37,6 +45,9 @@ defmodule Elide.Elink do
       where: e.id == ^id
   end
 
+  @doc """
+  Returns full short link
+  """
   def short_url(elink) do
     "#{elink.domain.domain}/#{slug(elink)}"
   end

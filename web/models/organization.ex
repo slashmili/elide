@@ -22,6 +22,9 @@ defmodule Elide.Organization do
     |> cast(params, @required_fields, @optional_fields)
   end
 
+  @doc """
+  Returns query that match organizations that owned by the user
+  """
   def owned_by(user) do
     from o in __MODULE__, where: o.owner_id == ^user.id
   end

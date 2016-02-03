@@ -25,6 +25,9 @@ defmodule Elide.Membership do
     |> validate_inclusion(:role, ["m"])
   end
 
+  @doc """
+  Returns query that match all the memberships for given organization
+  """
   def for_organization(organization) do
     from m in __MODULE__, where: m.organization_id == ^organization.id
   end

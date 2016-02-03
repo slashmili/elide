@@ -7,6 +7,7 @@ defmodule Elide.OAuth2.Google do
   alias OAuth2.Strategy.AuthCode
 
   @google_open_id_api "https://www.googleapis.com/plus/v1/people/me/openIdConnect"
+  @google_api_scope "https://www.googleapis.com/auth/userinfo.email"
 
   defp config do
     [strategy: __MODULE__,
@@ -24,7 +25,10 @@ defmodule Elide.OAuth2.Google do
   end
 
   def authorize_url!(params \\ []) do
-    OAuth2.Client.authorize_url!(client(), params)
+    OAuth2.Client.authorize_url!(
+      client(),
+      params |> Keyword.merge([scope: @google_api_scope])
+      )
   end
 
   def get_token!(params \\ [], _headers \\ []) do
