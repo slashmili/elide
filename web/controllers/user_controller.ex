@@ -11,7 +11,7 @@ defmodule Elide.UserController do
 
   def callback(conn, %{"provider" => provider, "code" => code}) do
     user =
-      "google"
+      provider
       |> Auth.get_user_details!(code)
       |> get_or_create_user
 

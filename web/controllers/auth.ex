@@ -6,6 +6,9 @@ defmodule Elide.Auth do
     Keyword.fetch!(opts, :repo)
   end
 
+  @doc """
+  Gets the logged in user from session
+  """
   def call(conn, repo) do
     user_id = get_session(conn, :user_id)
 
@@ -19,6 +22,9 @@ defmodule Elide.Auth do
     end
   end
 
+  @doc """
+  Returns the user if exists in conn, otherwise redirect user to home
+  """
   def authenticate_user(conn, _opts) do
     if conn.assigns.current_user do
       conn
@@ -30,6 +36,9 @@ defmodule Elide.Auth do
     end
   end
 
+  @doc """
+  Prepares client's session to keep the logged in user
+  """
   def login(conn, user) do
     conn
     |> assign(:current_user, user)
@@ -37,15 +46,27 @@ defmodule Elide.Auth do
     |> configure_session(renew: true)
   end
 
+  @doc """
+  Cleans up client's session
+  """
   def logout(conn) do
     conn
     |> put_session(:user_id, nil)
     |> configure_session(renew: true)
   end
 
-  def authorize_url!("google"),   do: Google.authorize_url!(scope: "https://www.googleapis.com/auth/userinfo.email")
+  @doc """
+  Authorizes received token through google api
+
+  For now we only support google as oauth provider
+  """
+  def authorize_url!("google"),   do: Google.authorize_url!()
+
   def authorize_url!(_), do: raise "No matching provider available"
 
+  @doc """
+  Gets user's details based on google oauth response
+  """
   def get_user_details!("google", code) do
     user =
       [code: code]
@@ -60,5 +81,4 @@ defmodule Elide.Auth do
       avatar: user["picture"]
     }
   end
-
 end

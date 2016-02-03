@@ -1,4 +1,7 @@
 defmodule Elide.ElinkServer do
+  @moduledoc """
+  This module is responsible for creating and caching elinks
+  """
   use GenServer
 
   alias Elide.{Elink, Repo, Url}
@@ -7,6 +10,9 @@ defmodule Elide.ElinkServer do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
+  @doc """
+  Creates an elink
+  """
   def create_elink(opts) do
     #TODO: validate opts
     GenServer.call(__MODULE__, {:create_elink, opts})
