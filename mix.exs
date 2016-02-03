@@ -3,6 +3,7 @@ defmodule Elide.Mixfile do
 
   def project do
     [app: :elide,
+     name: "Elide",
      version: "0.0.1",
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
@@ -10,7 +11,8 @@ defmodule Elide.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases,
-     deps: deps]
+     deps: deps,
+     docs: docs]
   end
 
   # Configuration for the OTP application.
@@ -41,9 +43,18 @@ defmodule Elide.Mixfile do
      {:mix_test_watch, "~> 0.2", only: :dev},
      {:mock, "~> 0.1.1", only: :test},
      {:hashids, "~> 2.0"},
+     {:ex_doc, "~> 0.11.4", only: :dev},
+     {:earmark, "~> 0.2.1", only: :dev},
    ]
   end
 
+  defp docs do
+    [main: "getting-started",
+      formatter_opts: [gfm: true],
+      extras: [
+        "docs/Getting Started.md",
+      ]]
+  end
   # Aliases are shortcut or tasks specific to the current project.
   # For example, to create, migrate and run the seeds file at once:
   #
