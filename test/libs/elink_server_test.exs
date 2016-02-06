@@ -3,7 +3,7 @@ defmodule Elide.ElinkServerTest do
 
   import Elide.TestHelpers
 
-  alias Elide.{ElinkServer}
+  alias Elide.{Repo, Elink, Url, ElinkServer}
 
   setup do
     user = insert_user(email: "foobar@buz.com")
@@ -33,5 +33,46 @@ defmodule Elide.ElinkServerTest do
     )
     wrong_url_changeset = changesets |> List.first
     assert wrong_url_changeset.errors == [link: "has invalid format"]
+  end
+
+  test "fetch an elink", %{domain: domain, user: user} do
+    urls = ["http://foobar.com"]
+    {:ok, elink} = ElinkServer.create_elink(
+      domain: domain,
+      urls: urls,
+      user: user
+    )
+
+    slug = Elink.slug(elink)
+    fetched_elink = ElinkServer.get_elink(slug)
+
+    assert elink == fetched_elink
+  end
+
+  test "an already fetched elink should be cached", %{domain: domain, user: user} do
+    foobar_dot_com = "http://foobar.com"
+    urls = [foobar_dot_com]
+    {:ok, elink} = ElinkServer.create_elink(
+      domain: domain,
+      urls: urls,
+      user: user
+    )
+
+    slug = Elink.slug(elink)
+    fetched_elink = ElinkServer.get_elink(slug)
+
+    assert elink == fetched_elink
+
+    fetched_elink.urls
+    |> List.first
+    |> Url.changeset(%{link: "http://bar.com"})
+    |> Repo.update
+
+    fetch_elink_again = ElinkServer.get_elink(slug)
+
+    cached_url = fetch_elink_again.urls |> List.first
+
+    assert cached_url.link == foobar_dot_com ,
+      "elink should be cached already and new changes in db shouldn't effect the cached value"
   end
 end
