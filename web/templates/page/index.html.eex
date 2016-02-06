@@ -6,10 +6,19 @@
                     <div class="intro-text">
                         <span class="name">SHORTEN. SHARE.</span>
                         <hr class="star-light">
-                        <fieldset>
-                          <input taborder="1" name="url" type="text" class="shorten-input" placeholder="Paste a link to shorten it" value="" autocomplete="off" autocorrect="off" autocapitalize="off">
-                          <input type="submit" class="button button-primary button-large shorten-button" value="Shorten">
-                        </fieldset>
+                        <form id="home-page-short-url-form">
+                          <input type="hidden" name="form-action" value="shorten" />
+                          <fieldset>
+                            <span>
+                              <a class="exit-copy hidden" title="rest"><i class="glyphicon glyphicon-remove"></i></a>
+                            </span>
+                            <input
+                                taborder="1" name="url" type="text" class="shorten-input"
+                                placeholder="Paste a link to shorten it" value="" id="long-url"
+                                autocomplete="off" autocorrect="off" autocapitalize="off">
+                            <input type="submit" class="button button-primary button-large shorten-button" value="Shorten">
+                          </fieldset>
+                        </form>
                     </div>
                 </div>
             </div>
