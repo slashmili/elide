@@ -1,7 +1,7 @@
 defmodule Elide.ElinkController do
   use Elide.Web, :controller
 
-  alias Elide.{Elink, Url, Domain}
+  alias Elide.{Elink, Url, Domain, ElinkServer}
 
   plug :scrub_params, "elink" when action in [:update]
 
@@ -24,7 +24,7 @@ defmodule Elide.ElinkController do
     user = conn.assigns[:current_user]
 
     domain = get_domain(elink_params["domain_id"])
-    elink_result = Elide.ElinkServer.create_elink(
+    elink_result = ElinkServer.create_elink(
       domain: domain,
       user: user,
       urls: urls |> Map.values
@@ -42,7 +42,7 @@ defmodule Elide.ElinkController do
   end
 
   def go(conn, %{"slug" => slug}) do
-    elink = Repo.one(Elink.by_slug(slug)) |> Repo.preload(:urls)
+    elink = ElinkServer.get_elink(slug)
     url = elink.urls |> Enum.shuffle |> List.first
     conn
     |> redirect(external: url.link)
