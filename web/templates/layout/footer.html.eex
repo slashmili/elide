@@ -1,0 +1,30 @@
+    <footer class="main-footer">
+      <div class="container">
+        <div class="row">
+          <div class="footer-col col-md-6">
+            <h3>About Elide</h3>
+            <p>
+            Elide is an open source URL shortening service
+            </p>
+          </div>
+          <div class="footer-col col-md-6">
+            <h3>Find more</h3>
+            <ul>
+              <li>
+                <a class="btn-social btn-outline" href="http://dev.elid.me/lega.html"><i class="fa fa-gavel"></a></i>
+              </li>
+              <li>
+                <a class="btn-social btn-outline" href="https://github.com/slashmili/elide"><i class="fa fa-github"></i></a>
+              </li>
+              <li>
+                <a class="btn-social btn-outline" href="http://dev.elide.me/getting-started.html"><i class="glyphicon glyphicon-book"></i></a>
+              </li>
+              <li>
+                <a class="btn-social btn-outline" href="https://github.com/slashmili/elide/issues"><i class="glyphicon glyphicon-envelope"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </footer>

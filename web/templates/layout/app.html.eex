@@ -14,6 +14,7 @@
   <body>
     <%= render "header.html", assigns %>
     <%= render @view_module, @view_template, assigns %>
+    <%= render "footer.html", assigns %>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

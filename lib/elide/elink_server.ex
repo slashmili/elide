@@ -45,7 +45,11 @@ defmodule Elide.ElinkServer do
   end
 
   defp fetch_elink(slug) do
-    Repo.one(Elink.by_slug(slug)) |> Repo.preload(:urls)
+    slug
+    |> Elink.by_slug
+    |> Repo.one
+    |> Repo.preload(:urls)
+    |> Repo.preload(:domain)
   end
 
   def handle_call({:get_elink, slug}, _, state) do
@@ -63,7 +67,7 @@ defmodule Elide.ElinkServer do
       {:reply, {:error, prepare_urls_changeset(urls)}, state}
     else
       elink_result =
-        %Elink{user_id: opts[:user].id, domain_id: opts[:domain].id}
+        %Elink{user_id: opts[:user] && opts[:user].id, domain_id: opts[:domain].id}
         |> Elink.changeset(%{})
         |> Repo.insert
 

@@ -46,7 +46,7 @@ defmodule Elide.ElinkServerTest do
     slug = Elink.slug(elink)
     fetched_elink = ElinkServer.get_elink(slug)
 
-    assert elink == fetched_elink
+    assert elink.id == fetched_elink.id
   end
 
   test "an already fetched elink should be cached", %{domain: domain, user: user} do
@@ -61,7 +61,7 @@ defmodule Elide.ElinkServerTest do
     slug = Elink.slug(elink)
     fetched_elink = ElinkServer.get_elink(slug)
 
-    assert elink == fetched_elink
+    assert elink.id == fetched_elink.id
 
     fetched_elink.urls
     |> List.first
@@ -74,5 +74,17 @@ defmodule Elide.ElinkServerTest do
 
     assert cached_url.link == foobar_dot_com ,
       "elink should be cached already and new changes in db shouldn't effect the cached value"
+  end
+
+  test "allow anonymous users to create elink", %{domain: domain} do
+    foobar_dot_com = "http://foobar.com"
+    urls = [foobar_dot_com]
+    {:ok, elink} = ElinkServer.create_elink(
+    domain: domain,
+    urls: urls,
+    user: nil
+    )
+
+    assert elink != nil
   end
 end
