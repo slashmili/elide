@@ -19,7 +19,27 @@ defmodule Elide.ElinkServer do
   """
   def create_elink(opts) do
     #TODO: validate opts
-    GenServer.call(__MODULE__, {:create_elink, opts})
+    urls = opts[:urls]
+    if has_invalid_url?(urls) do
+      {:error, prepare_urls_changeset(urls)}
+    else
+      elink_result =
+        %Elink{user_id: opts[:user] && opts[:user].id, domain_id: opts[:domain].id}
+        |> Elink.changeset(%{})
+        |> Repo.insert
+
+      case elink_result do
+        {:ok, elink} ->
+          urls
+          |> prepare_urls_changeset(elink.id)
+          |> Enum.each(&Repo.insert!(&1))
+
+          elink = elink |> Repo.preload(:urls)
+          {:ok, elink}
+        {:error, changeset} ->
+          {:error, [changeset]}
+      end
+    end
   end
 
   @doc """
@@ -59,30 +79,6 @@ defmodule Elide.ElinkServer do
   def handle_cast({:set_elink, elink}, state) do
     state = Map.put(state, Elink.slug(elink), elink)
     {:noreply, state}
-  end
-
-  def handle_call({:create_elink, opts}, _,state) do
-    urls = opts[:urls]
-    if has_invalid_url?(urls) do
-      {:reply, {:error, prepare_urls_changeset(urls)}, state}
-    else
-      elink_result =
-        %Elink{user_id: opts[:user] && opts[:user].id, domain_id: opts[:domain].id}
-        |> Elink.changeset(%{})
-        |> Repo.insert
-
-      case elink_result do
-        {:ok, elink} ->
-          urls
-          |> prepare_urls_changeset(elink.id)
-          |> Enum.map(&Repo.insert!(&1))
-
-          elink = elink |> Repo.preload(:urls)
-          {:reply, {:ok, elink}, state}
-        {:error, changeset} ->
-          {:reply, {:error, [changeset]}, state}
-      end
-    end
   end
 
   defp prepare_urls_changeset(urls, elink_id \\ 0) do
