@@ -1,5 +1,5 @@
 build-prod: build-img
-	docker run -e"MIX_ENV=prod" --rm -it -v "$(PWD):/code" elide-build
+	docker run -e "MIX_ENV=prod" --rm -it -v "$(PWD):/code" elide-build
 	docker build -t elide-prod -f docker/prod/Dockerfile .
 
 build-img:
