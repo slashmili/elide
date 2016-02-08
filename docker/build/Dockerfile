@@ -1,7 +1,5 @@
 FROM alpine:edge
 
-ENV MIX_ENV prod
-
 RUN apk --update add \
     erlang erlang-crypto erlang-sasl\
     elixir \
