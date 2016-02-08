@@ -1,0 +1,13 @@
+elide:
+    build: .
+    volumes:
+        - ./:/code
+    working_dir: /code
+    links:
+        - db:db.local
+    ports:
+        - 4000
+    env_file:
+        - ./env
+db:
+    image: postgres:latest
