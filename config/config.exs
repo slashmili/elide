@@ -19,6 +19,14 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :elide, Elide.Auth,
+  allow_sing_up: System.get_env("ALLOW_SING_UP")
+
+config :elide, Elide.OAuth2.Google,
+  client_id: System.get_env("GOOGLE_CLIENT_ID"),
+  client_secret: System.get_env("GOOGLE_CLIENT_SECRET"),
+  redirect_uri: System.get_env("GOOGLE_REDIRECT_URI")
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
@@ -28,7 +36,4 @@ config :phoenix, :generators,
   migration: true,
   binary_id: false
 
-config :elide, Elide.OAuth2.Google,
-  client_id: System.get_env("GOOGLE_CLIENT_ID"),
-  client_secret: System.get_env("GOOGLE_CLIENT_SECRET"),
-  redirect_uri: System.get_env("GOOGLE_REDIRECT_URI")
+
