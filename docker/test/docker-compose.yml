@@ -1,0 +1,11 @@
+test:
+  build: .
+  links:
+    - postgres:postgres-test.local
+  environment:
+    MIX_ENV: test
+  volumes:
+    - ../../:/code
+  working_dir: /code
+postgres:
+  image: postgres:9.4

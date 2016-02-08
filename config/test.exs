@@ -15,5 +15,5 @@ config :elide, Elide.Repo,
   username: "postgres",
   password: "postgres",
   database: "elide_test",
-  hostname: "localhost",
+  hostname: "postgres-test.local",
   pool: Ecto.Adapters.SQL.Sandbox
