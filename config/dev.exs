@@ -41,7 +41,5 @@ config :elide, Elide.Repo,
   hostname: "localhost",
   pool_size: 10
 
-config :elide, Elide.OAuth2.Google,
-  client_id: System.get_env("GOOGLE_CLIENT_ID"),
-  client_secret: System.get_env("GOOGLE_CLIENT_SECRET"),
-  redirect_uri: System.get_env("GOOGLE_REDIRECT_URI")
+config :elide, Elide.Auth,
+  allow_sing_up: true
