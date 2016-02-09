@@ -21,7 +21,7 @@ defmodule Elide.Mixfile do
   def application do
     [mod: {Elide, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :oauth2]]
+                    :phoenix_ecto, :postgrex, :oauth2, :hashids, :connection]]
   end
 
   # Specifies which paths to compile per environment.
@@ -45,6 +45,7 @@ defmodule Elide.Mixfile do
      {:hashids, "~> 2.0"},
      {:ex_doc, "~> 0.11.4", only: :dev},
      {:earmark, "~> 0.2.1", only: :dev},
+     {:exrm, "~> 1.0.0-rc7"},
    ]
   end
 
