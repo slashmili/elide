@@ -2,6 +2,7 @@ FROM alpine:edge
 
 RUN apk --update add \
     erlang erlang-crypto erlang-sasl \
+    coreutils \
     && rm -rf /var/cache/apk/*
 
 ENV MIX_ENV prod
