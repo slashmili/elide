@@ -28,7 +28,7 @@ use Mix.Config
 
 config :elide, Elide.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "myhost.com", port: 80],
+  url: [host: "<your-domain.com>", port: 80],
   cache_static_manifest: "priv/static/manifest.json",
   server: true,
   secret_key_base: "<your secret key>"
@@ -64,5 +64,5 @@ $ docker run -e --rm -p 4000:4000 elide-prod sh
 $ /opt/elide/bin/elide console
 iex> mig_dir = "/opt/elide/lib/elide-0.0.1/priv/repo/migrations"
 iex> Ecto.Migrator.run(Elide.Repo, mig_dir, :up, :all)
-iex> Repo.insert!(%Domain{domain: "<domain>"})
+iex> Repo.insert!(%Domain{domain: "<your-domain.com>"})
 ```
