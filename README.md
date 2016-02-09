@@ -56,3 +56,13 @@ You can deploy that image to your production environment.
 ```bash
 docker run -e --rm -p 4000:4000 elide-prod
 ```
+
+### DB migration on production
+
+```
+$ docker run -e --rm -p 4000:4000 elide-prod sh
+$ /opt/elide/bin/elide console
+iex> mig_dir = "/opt/elide/lib/elide-0.0.1/priv/repo/migrations"
+iex> Ecto.Migrator.run(Elide.Repo, mig_dir, :up, :all)
+iex> Repo.insert!(%Domain{domain: "<domain>"})
+```
