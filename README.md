@@ -42,6 +42,8 @@ config :elide, Elide.Repo,
   hostname: "<db host in production>",
   pool_size: 20
 
+config :elide, Elide.Elink,
+  hashid_salt: '<salt to generate hash>'
 ```
 
 And run:

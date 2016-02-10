@@ -43,3 +43,6 @@ config :elide, Elide.Repo,
 
 config :elide, Elide.Auth,
   allow_sing_up: true
+
+config :elide, Elide.Elink,
+  hashid_salt: ""
