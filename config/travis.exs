@@ -17,3 +17,6 @@ config :elide, Elide.Repo,
   database: "elide_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :elide, Elide.Elink,
+  hashid_salt: ""
