@@ -4,6 +4,5 @@ defmodule Elide.LayoutView do
   def allow_sing_up? do
     config = Application.get_env(:elide, Elide.Auth)
     config[:allow_sing_up]
-    |> IO.inspect
   end
 end
