@@ -3,7 +3,7 @@ defmodule Elide.ElinkTest do
 
   alias Elide.{Elink, Domain}
 
-  @valid_attrs %{domain_id: 1}
+  @valid_attrs %{domain_id: 1, elink_seq: 10}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
@@ -17,15 +17,22 @@ defmodule Elide.ElinkTest do
   end
 
   test "Elink.slug" do
-    elink = %Elink{id: 1234}
+    elink = %Elink{id: 1234, domain_id: 1, elink_seq: 10}
 
     slug = Elink.slug(elink)
-    assert slug == "e1ljd"
+    assert slug == "wpfg"
   end
+
   test "Elink.short_url" do
-    elink = %Elink{id: 1234, domain: %Domain{domain: "example.net"}}
+    elink = %Elink{id: 1234, domain: %Domain{domain: "example.net"}, domain_id: 1, elink_seq: 10}
 
     short_url = Elink.short_url(elink)
-    assert short_url == "example.net/e1ljd"
+    assert short_url == "example.net/wpfg"
+  end
+
+  test "Get elink details by providing slug" do
+    details = Elink.get_details_by_slug("wpfg")
+    assert details[:domain_id] == 1
+    assert details[:elink_seq] == 10
   end
 end
