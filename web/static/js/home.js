@@ -60,12 +60,15 @@ let Home = {
     self = this
     self.connectToChannel()
 
-    let payload = {url: $(self.longUrlInput).val()}
+    let url = $(self.longUrlInput).val()
+    if (!url.startsWith('http')) {
+        url = "http://" + url
+    }
+    let payload = {url: url}
     self.channel.push("create_elink", payload)
         .receive("error", e => self.handleError(e))
   },
   handleError: function(msg) {
-    console.log(`=======errrrorrrr:`)
     console.log(msg)
   },
 }
