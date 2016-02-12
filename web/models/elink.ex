@@ -3,6 +3,7 @@ defmodule Elide.Elink do
 
   schema "elinks" do
     field :slug, :string
+    field :elink_seq, :integer
     belongs_to :domain, Elide.Domain
     belongs_to :user, Elide.User
     belongs_to :organization, Elide.Organization
@@ -11,7 +12,7 @@ defmodule Elide.Elink do
     timestamps
   end
 
-  @required_fields ~w(domain_id)
+  @required_fields ~w(domain_id elink_seq)
   @optional_fields ~w()
 
   @doc """
@@ -29,8 +30,8 @@ defmodule Elide.Elink do
   Returns short url hash based on elink
   """
   def slug(elink) do
-    s = Hashids.new(min_len: 5, salt: salt)
-    Hashids.encode(s, elink.id)
+    s = Hashids.new(min_len: 1, salt: salt)
+    Hashids.encode(s, [elink.domain_id, elink.elink_seq])
   end
 
   @doc """
@@ -39,10 +40,11 @@ defmodule Elide.Elink do
   This query should return only one `Elink` item
   """
   def by_slug(slug) do
-    s = Hashids.new(min_len: 5, salt: salt)
-    {:ok, [id]} = Hashids.decode(s, slug)
+    details = get_details_by_slug(slug)
+    domain_id = details[:domain_id]
+    elink_seq = details[:elink_seq]
     from e in __MODULE__,
-      where: e.id == ^id
+      where: e.domain_id == ^domain_id and e.elink_seq == ^elink_seq
   end
 
   @doc """
@@ -50,6 +52,12 @@ defmodule Elide.Elink do
   """
   def short_url(elink) do
     "#{elink.domain.domain}/#{slug(elink)}"
+  end
+
+  def get_details_by_slug(slug) do
+    s = Hashids.new(min_len: 1, salt: salt)
+    {:ok, [domain_id, elink_seq]} = Hashids.decode(s, slug)
+    [domain_id: domain_id, elink_seq: elink_seq]
   end
 
   def salt do

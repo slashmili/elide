@@ -23,8 +23,13 @@ defmodule Elide.ElinkServer do
     if has_invalid_url?(urls) do
       {:error, prepare_urls_changeset(urls)}
     else
+      seq = opts[:domain] |> next_seq
       elink_result =
-        %Elink{user_id: opts[:user] && opts[:user].id, domain_id: opts[:domain].id}
+        %Elink{
+          user_id: opts[:user] && opts[:user].id,
+          domain_id: opts[:domain].id,
+          elink_seq: seq
+          }
         |> Elink.changeset(%{})
         |> Repo.insert
 
@@ -42,6 +47,9 @@ defmodule Elide.ElinkServer do
     end
   end
 
+  defp next_seq(domain) do
+    Elide.ElinkSeqServer.nextval(domain)
+  end
   @doc """
   Gets an elink from cache or DB bsaed on slug.
 
