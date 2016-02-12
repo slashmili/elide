@@ -12,17 +12,21 @@ defmodule Elide.ElinkSeqServer do
   import Ecto.Query, only: [from: 1, from: 2]
   alias Elide.{Repo, Elink, Domain}
 
+  @doc """
+  Initialize ElinkSeqServer state
+  """
   def init do
     Repo.all(Domain)
     |> Enum.map(fn(d) -> {d.id, get_sequence(d)} end)
     |> Enum.into(%{})
   end
 
+  @doc false
   def start_link() do
     Agent.start_link(fn -> init end, name: __MODULE__)
   end
 
-  def int_to_atom(int) when is_integer(int) do
+  defp int_to_atom(int) when is_integer(int) do
     int
     |> Integer.to_string
     |> String.to_atom
