@@ -3,9 +3,22 @@ defmodule Elide.V1.ElinkApiController do
 
   alias Elide.{Elink, Domain, ElinkServer}
 
-  def create(conn, params) do
-    urls = params["urls"]
-    domain = get_domain(nil)
+  def create(conn, %{"urls" => urls, "domain" => domain_addr}) do
+    domain =
+      domain_addr
+      |> Domain.by_address
+      |> Repo.one
+    create_elink(conn, urls, domain)
+  end
+
+  def create(conn, %{"urls" => urls}) do
+    domain =
+      Domain.default_domain
+      |> Repo.one
+    create_elink(conn, urls, domain)
+  end
+
+  def create_elink(conn, urls, domain) do
     elink_result = ElinkServer.create_elink(
       domain: domain,
       user: nil,
@@ -37,14 +50,5 @@ defmodule Elide.V1.ElinkApiController do
   defp to_list_of_map(keyword_list) do
     keyword_list
     |> Enum.map(fn({k,v}) -> %{k => v} end)
-  end
-
-  defp get_domain(nil) do
-    [default_domain | _ ] = Repo.all(Domain)
-    default_domain
-  end
-
-  defp get_domain(domain_id) do
-    Repo.get!(Domain, domain_id)
   end
 end

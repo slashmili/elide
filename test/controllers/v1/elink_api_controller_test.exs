@@ -31,6 +31,23 @@ defmodule Elide.Api.V1.ElinkControllerTest do
     assert json == %{"errors" => [%{"example.com" => [%{"link" => "has invalid format"}]}]}
   end
 
+  test "creates elink with specific domain", %{conn: conn} do
+    insert_domain()
+    expected_domain = insert_domain()
+    url = unique_url
+    json_params = %{
+      "urls" => [url],
+      "domain" => expected_domain.domain
+    }
+    conn = post conn, elink_api_path(conn, :create, json_params)
+
+    assert json_response(conn, 201)
+    elink_json = json_response(conn, 201)
+    assert elink_json["short_url"] =~ expected_domain.domain
+    saved_url = Repo.get_by(Url, %{link: url})
+    assert saved_url
+  end
+
   defp unique_url do
     "http://url-#{get_uniqe_id}.com"
   end
