@@ -39,7 +39,10 @@ defmodule Elide.ElinkServer do
           |> prepare_urls_changeset(elink.id)
           |> Enum.each(&Repo.insert!(&1))
 
-          elink = elink |> Repo.preload(:urls)
+          elink =
+            elink
+            |> Repo.preload(:urls)
+            |> Repo.preload(:domain)
           {:ok, elink}
         {:error, changeset} ->
           {:error, [changeset]}
