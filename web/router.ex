@@ -41,8 +41,10 @@ defmodule Elide.Router do
     #delete "/logout", AuthController, :delete
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Elide do
-  #   pipe_through :api
-  # end
+  scope "/api", Elide do
+    pipe_through :api
+    scope "/v1", V1 do
+      post "/elinks", ElinkApiController, :create
+    end
+  end
 end

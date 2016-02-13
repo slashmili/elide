@@ -31,7 +31,7 @@ defmodule Elide.TestHelpers do
 
   def insert_domain(attrs \\ %{}) do
     changes = Dict.merge(%{
-      domain: "#{get_uniqe_id}.com",
+      domain: "domain-#{get_uniqe_id}.com",
     }, attrs)
 
     %Domain{}

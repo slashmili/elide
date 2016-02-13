@@ -20,4 +20,12 @@ defmodule Elide.Domain do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def default_domain do
+    from d in __MODULE__, order_by: d.id, limit: 1
+  end
+
+  def by_address(domain_name) do
+    from d in __MODULE__, where: d.domain == ^domain_name
+  end
 end
