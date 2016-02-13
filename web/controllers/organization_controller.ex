@@ -10,7 +10,7 @@ defmodule Elide.OrganizationController do
           [conn, conn.params, conn.assigns.current_user])
   end
 
-  def index(conn, params, user) do
+  def index(conn, _params, user) do
     organizations = Repo.all(Organization.owned_by(user))
     render(conn, "index.html", organizations: organizations)
   end

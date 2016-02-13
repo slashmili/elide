@@ -33,7 +33,7 @@ defmodule Elide.HomeChannel do
     {:reply, :ok, socket}
   end
 
-  defp create_elink_response({:error, changesets}, socket) do
+  defp create_elink_response({:error, _changesets}, socket) do
     #TODO: find the error from changesets
     #error = changesets |> List.first | Map.get
     error = "wrong url format"

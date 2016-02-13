@@ -26,12 +26,6 @@ defmodule Elide.ElinkSeqServer do
     Agent.start_link(fn -> init end, name: __MODULE__)
   end
 
-  defp int_to_atom(int) when is_integer(int) do
-    int
-    |> Integer.to_string
-    |> String.to_atom
-  end
-
   def nextval(domain_id) when is_integer(domain_id) do
     Agent.get_and_update(__MODULE__, fn(state) ->
       seq = Map.get state, domain_id, 0
@@ -65,7 +59,7 @@ defmodule Elide.ElinkSeqServer do
   """
   def get_sequence(domain) do
     domain_id = domain.id
-    last_seq_query = from e in Elide.Elink, select: max(e.elink_seq),  where: e.domain_id == ^domain_id
+    last_seq_query = from e in Elink, select: max(e.elink_seq),  where: e.domain_id == ^domain_id
     seq =
       last_seq_query
       |> Repo.one
