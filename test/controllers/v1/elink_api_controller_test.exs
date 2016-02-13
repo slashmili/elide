@@ -3,8 +3,12 @@ defmodule Elide.Api.V1.ElinkControllerTest do
 
   alias Elide.Url
 
-  test "creates an elink through api", %{conn: conn} do
+  setup do
     domain = insert_domain()
+    {:ok, conn: Phoenix.ConnTest.conn(), domain: domain}
+  end
+
+  test "creates an elink through api", %{conn: conn, domain: domain} do
     url = unique_url
     json_params = %{
       "urls" => [url]
@@ -19,7 +23,6 @@ defmodule Elide.Api.V1.ElinkControllerTest do
   end
 
   test "elink creation should fail because of wrong url address", %{conn: conn} do
-    insert_domain()
     url = unique_url
     json_params = %{
       "urls" => [url, "example.com"]
@@ -32,7 +35,6 @@ defmodule Elide.Api.V1.ElinkControllerTest do
   end
 
   test "creates elink with specific domain", %{conn: conn} do
-    insert_domain()
     expected_domain = insert_domain()
     url = unique_url
     json_params = %{
@@ -49,7 +51,6 @@ defmodule Elide.Api.V1.ElinkControllerTest do
   end
 
   test "creates elink with nonexistent domain", %{conn: conn} do
-    insert_domain()
     url = unique_url
     json_params = %{
       "urls" => [url],
