@@ -48,6 +48,19 @@ defmodule Elide.Api.V1.ElinkControllerTest do
     assert saved_url
   end
 
+  test "creates elink with nonexistent domain", %{conn: conn} do
+    insert_domain()
+    url = unique_url
+    json_params = %{
+      "urls" => [url],
+      "domain" => "boo.com"
+    }
+    conn = post conn, elink_api_path(conn, :create, json_params)
+
+    json = json_response(conn, 422)
+    assert json == %{"errors" => [%{"domain" => ["domain doesn't exist"]}]}
+  end
+
   defp unique_url do
     "http://url-#{get_uniqe_id}.com"
   end

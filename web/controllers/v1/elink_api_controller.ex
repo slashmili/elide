@@ -18,6 +18,12 @@ defmodule Elide.V1.ElinkApiController do
     create_elink(conn, urls, domain)
   end
 
+  def create_elink(conn, _urls, nil) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> render("error.json", errors: [%{"domain" => ["domain doesn't exist"]}])
+  end
+
   def create_elink(conn, urls, domain) do
     elink_result = ElinkServer.create_elink(
       domain: domain,
