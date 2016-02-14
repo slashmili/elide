@@ -43,7 +43,7 @@ config :elide, Elide.Repo,
   pool_size: 20
 
 config :elide, Elide.Elink,
-  hashid_salt: '<salt to generate hash>'
+  hashid_salt: "<salt to generate hash>"
 ```
 
 And run:
