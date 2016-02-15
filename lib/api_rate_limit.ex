@@ -9,7 +9,7 @@ defmodule Elide.ApiRateLimit do
       true
       iex > ApiRateLimit.validate_limli!("127.0.0.1", cache)
       true
-      iex > ApiRateLimit.like!("127.0.0.1", cache)
+      iex > ApiRateLimit.validate_limli!("127.0.0.1", cache)
       false
 
   """
