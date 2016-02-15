@@ -20,33 +20,39 @@ defmodule Elide.ElinkServer do
   def create_elink(opts) do
     #TODO: validate opts
     urls = opts[:urls]
-    if has_invalid_url?(urls) do
-      {:error, prepare_urls_changeset(urls)}
-    else
-      seq = opts[:domain] |> next_seq
-      elink_result =
-        %Elink{
-          user_id: opts[:user] && opts[:user].id,
-          domain_id: opts[:domain].id,
-          elink_seq: seq
-          }
-        |> Elink.changeset(%{})
-        |> Repo.insert
+    cond do
+      has_invalid_url?(urls) ->
+        {:error, prepare_urls_changeset(urls)}
+      true ->
+        create_elink_in_db(opts)
+    end
+  end
 
-      case elink_result do
-        {:ok, elink} ->
-          urls
-          |> prepare_urls_changeset(elink.id)
-          |> Enum.each(&Repo.insert!(&1))
+  defp create_elink_in_db(opts) do
+    urls = opts[:urls]
+    seq = opts[:domain] |> next_seq
+    elink_result =
+    %Elink{
+      user_id: opts[:user] && opts[:user].id,
+      domain_id: opts[:domain].id,
+      elink_seq: seq
+    }
+    |> Elink.changeset(%{})
+    |> Repo.insert
 
-          elink =
-            elink
-            |> Repo.preload(:urls)
-            |> Repo.preload(:domain)
-          {:ok, elink}
-        {:error, changeset} ->
-          {:error, [changeset]}
-      end
+    case elink_result do
+      {:ok, elink} ->
+        urls
+        |> prepare_urls_changeset(elink.id)
+        |> Enum.each(&Repo.insert!(&1))
+
+        elink =
+        elink
+        |> Repo.preload(:urls)
+        |> Repo.preload(:domain)
+        {:ok, elink}
+      {:error, changeset} ->
+        {:error, [changeset]}
     end
   end
 
