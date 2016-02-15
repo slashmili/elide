@@ -20,3 +20,6 @@ config :elide, Elide.Repo,
 
 config :elide, Elide.Elink,
   hashid_salt: ""
+
+config :elide, Elide.Cache.ApiRateLimit,
+  api_rate_limit: nil

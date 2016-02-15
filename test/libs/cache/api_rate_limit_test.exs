@@ -7,7 +7,7 @@ defmodule Elide.Cache.ApiRateLimitTest do
     {:ok, pid} = ApiRateLimit.start_link([
       ttl_check: :timer.seconds(1),
       ttl: :timer.seconds(5),
-      rate_limit: 1
+      api_rate_limit: 1
     ])
 
     assert ApiRateLimit.allowed?("127.0.0.1", pid)
@@ -22,7 +22,7 @@ defmodule Elide.Cache.ApiRateLimitTest do
     {:ok, pid} = ApiRateLimit.start_link([
       ttl_check: 200,
       ttl: 200,
-      rate_limit: 2
+      api_rate_limit: 2
     ])
 
     assert ApiRateLimit.allowed?("127.0.0.1", pid), "First access should be allowed"

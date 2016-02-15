@@ -3,7 +3,7 @@ defmodule Elide.Cache.ApiRateLimit do
   Keep track of api usage per given key, like ip address or user id
 
       iex > {:ok, cache} = ApiRateLimit.start_link(
-            [rate_limit: 2, ttl: :timer.hours(1), ttl_check: :timer.minutes(1)]
+            [api_rate_limit: 2, ttl: :timer.hours(1), ttl_check: :timer.minutes(1)]
             )
       iex > ApiRateLimit.allowed?("127.0.0.1", cache)
       true
@@ -21,13 +21,13 @@ defmodule Elide.Cache.ApiRateLimit do
   """
   def start_link(options, gen_server_options \\ []) do
     {:ok, pid} = ConCache.start_link(options, gen_server_options)
-    rate_limit(pid, options[:rate_limit])
+    rate_limit(pid, options[:api_rate_limit])
     {:ok, pid}
   end
 
   def start_link do
     options = [
-      rate_limit: 2,
+      api_rate_limit: config[:api_rate_limit],
       ttl: :timer.hours(1),
       ttl_check: :timer.minutes(1)
     ]
@@ -35,6 +35,10 @@ defmodule Elide.Cache.ApiRateLimit do
       name: :elide_cache_api_rate_limit
     ]
     start_link(options, gen_server_options)
+  end
+
+  defp config do
+    Application.get_env(:elide, __MODULE__)
   end
 
   defp rate_limit(pid, limit) do
