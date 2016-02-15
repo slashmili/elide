@@ -48,6 +48,7 @@ defmodule Elide.Mixfile do
      {:earmark, "~> 0.2.1", only: :dev},
      {:exrm, "~> 1.0.0-rc7"},
      {:con_cache, "~> 0.11.0"},
+     {:exactor, "~> 2.2.0"},
    ]
   end
 
