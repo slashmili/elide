@@ -47,7 +47,7 @@ defmodule Elide.Mixfile do
      {:ex_doc, "~> 0.11.4", only: :dev},
      {:earmark, "~> 0.2.1", only: :dev},
      {:exrm, "~> 1.0.0-rc7"},
-     {:con_cache, git: "https://github.com/sasa1977/con_cache.git"},
+     {:con_cache, "~> 0.11.0"},
    ]
   end
 
