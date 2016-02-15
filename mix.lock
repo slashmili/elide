@@ -1,6 +1,6 @@
 %{"bbmustache": {:hex, :bbmustache, "1.0.3"},
   "certifi": {:hex, :certifi, "0.3.0"},
-  "con_cache": {:git, "https://github.com/sasa1977/con_cache.git", "35bb6f43627c01b1d6f83c010ae2075225a65990", []},
+  "con_cache": {:git, "https://github.com/sasa1977/con_cache.git", "fefdd3376bc4661554f0406dccbc56f6df9027b1", []},
   "connection": {:hex, :connection, "1.0.2"},
   "cowboy": {:hex, :cowboy, "1.0.4"},
   "cowlib": {:hex, :cowlib, "1.0.2"},
