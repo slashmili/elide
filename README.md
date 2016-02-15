@@ -44,6 +44,10 @@ config :elide, Elide.Repo,
 
 config :elide, Elide.Elink,
   hashid_salt: '<salt to generate hash>'
+
+#number of time users can can create elink in one hour before reach to API Rate Limit (for unlimited access set as nil)
+config :elide, Elide.Cache.ApiRateLimit,
+  api_rate_limit: 10000
 ```
 
 And run:
