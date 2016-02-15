@@ -5,6 +5,7 @@ defmodule Elide.ElinkServer do
   use GenServer
 
   alias Elide.{Elink, Repo, Url}
+  alias Elide.Cache.ApiRateLimit
 
   def start_link() do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
@@ -14,13 +15,21 @@ defmodule Elide.ElinkServer do
     {:ok, Map.new}
   end
 
+  @doc false
+  def create_elink(opts) do
+    create_elink(opts, :elide_cache_api_rate_limit)
+  end
+
   @doc """
   Creates an elink
   """
-  def create_elink(opts) do
+  def create_elink(opts, api_limit_rate) do
     #TODO: validate opts
+    limit_per = opts[:limit_per]
     urls = opts[:urls]
     cond do
+      ! ApiRateLimit.allowed?(limit_per, api_limit_rate) ->
+        {:error, ["Reached to Api Rate limit"]}
       has_invalid_url?(urls) ->
         {:error, prepare_urls_changeset(urls)}
       true ->
