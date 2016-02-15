@@ -1,15 +1,15 @@
-defmodule Elide.ApiRateLimit do
+defmodule Elide.RateLimiter do
   @moduledoc """
   Keep track of api usage per given key, like ip address or user id
 
-      iex > {:ok, cache} = ApiRateLimit.start_link(
+      iex > {:ok, cache} = RateLimiter.start_link(
             [api_rate_limit: 2, ttl: :timer.hours(1), ttl_check: :timer.minutes(1)]
             )
-      iex > ApiRateLimit.allowed?("127.0.0.1", cache)
+      iex > RateLimiter.allowed?("127.0.0.1", cache)
       true
-      iex > ApiRateLimit.allowed?("127.0.0.1", cache)
+      iex > RateLimiter.allowed?("127.0.0.1", cache)
       true
-      iex > ApiRateLimit.allowed?("127.0.0.1", cache)
+      iex > RateLimiter.allowed?("127.0.0.1", cache)
       false
 
   """

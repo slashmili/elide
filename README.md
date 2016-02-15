@@ -47,7 +47,7 @@ config :elide, Elide.Elink,
 
 #Number of time users can create elinks in one hour before reach to API Rate Limit
 #For unlimited access set to nil
-config :elide, Elide.Cache.ApiRateLimit,
+config :elide, Elide.RateLimiter,
   api_rate_limit: 10000
 ```
 

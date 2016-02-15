@@ -11,7 +11,7 @@ defmodule Elide do
       supervisor(Elide.Endpoint, []),
       # Start the Ecto repository
       supervisor(Elide.Repo, []),
-      worker(Elide.ApiRateLimit, []),
+      worker(Elide.RateLimiter, []),
       worker(Elide.ElinkSeqServer, []),
       worker(Elide.ElinkServer, []),
     ]

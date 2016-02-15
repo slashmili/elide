@@ -4,7 +4,7 @@ defmodule Elide.ElinkServerTest do
   import Elide.TestHelpers
 
   alias Elide.{Repo, Elink, Url, ElinkServer}
-  alias Elide.ApiRateLimit
+  alias Elide.RateLimiter
 
   setup do
     user = insert_user(email: "foobar@buz.com")
@@ -90,7 +90,7 @@ defmodule Elide.ElinkServerTest do
   end
 
   test "shouldn't allow the second Elink gets created because of Api Rate Limit", %{domain: domain} do
-    {:ok, pid} = ApiRateLimit.start_link([
+    {:ok, pid} = RateLimiter.start_link([
       ttl_check: :timer.seconds(5),
       ttl: :timer.seconds(20),
       api_rate_limit: 1

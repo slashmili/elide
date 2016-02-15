@@ -5,7 +5,7 @@ defmodule Elide.ElinkServer do
   use GenServer
 
   alias Elide.{Elink, Repo, Url}
-  alias Elide.ApiRateLimit
+  alias Elide.RateLimiter
 
   def start_link() do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
@@ -28,7 +28,7 @@ defmodule Elide.ElinkServer do
     limit_per = opts[:limit_per]
     urls = opts[:urls]
     cond do
-      ! ApiRateLimit.allowed?(limit_per, api_limit_rate) ->
+      ! RateLimiter.allowed?(limit_per, api_limit_rate) ->
         {:error, :reached_api_rate_limit}
       has_invalid_url?(urls) ->
         {:error, prepare_urls_changeset(urls)}
