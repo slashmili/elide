@@ -1,4 +1,4 @@
-defmodule Elide.Cache.ApiRateLimit do
+defmodule Elide.ApiRateLimit do
   @moduledoc """
   Keep track of api usage per given key, like ip address or user id
 

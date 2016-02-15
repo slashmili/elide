@@ -4,7 +4,7 @@ defmodule Elide.ElinkServerTest do
   import Elide.TestHelpers
 
   alias Elide.{Repo, Elink, Url, ElinkServer}
-  alias Elide.Cache.ApiRateLimit
+  alias Elide.ApiRateLimit
 
   setup do
     user = insert_user(email: "foobar@buz.com")
