@@ -10,8 +10,8 @@ defmodule Elide.Cache.ApiRateLimitTest do
       api_rate_limit: 1
     ])
 
-    assert ApiRateLimit.allowed?("127.0.0.1", pid)
-    refute ApiRateLimit.allowed?("127.0.0.1", pid)
+    assert ApiRateLimit.allowed?({127, 0, 0, 1}, pid)
+    refute ApiRateLimit.allowed?({127, 0, 0, 1}, pid)
 
     assert ApiRateLimit.allowed?("127.0.0.2", pid)
 
