@@ -17,7 +17,7 @@ defmodule Elide.ElinkServer do
 
   @doc false
   def create_elink(opts) do
-    create_elink(opts, :elide_cache_api_rate_limit)
+    create_elink(opts, :elide_api_rate_limit)
   end
 
   @doc """
