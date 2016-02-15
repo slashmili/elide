@@ -28,7 +28,8 @@ defmodule Elide.V1.ElinkApiController do
     elink_result = ElinkServer.create_elink(
       domain: domain,
       user: nil,
-      urls: urls
+      urls: urls,
+      limit_per: conn.remote_ip
     )
 
     case elink_result do
