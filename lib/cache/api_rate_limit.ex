@@ -25,6 +25,18 @@ defmodule Elide.Cache.ApiRateLimit do
     {:ok, pid}
   end
 
+  def start_link do
+    options = [
+      rate_limit: 2,
+      ttl: :timer.hours(1),
+      ttl_check: :timer.minutes(1)
+    ]
+    gen_server_options = [
+      name: __MODULE__
+    ]
+    start_link(options, gen_server_options)
+  end
+
   defp rate_limit(pid, limit) do
     pid
     |> ConCache.put("rate_limit_#{__MODULE__}", %ConCache.Item{value: limit, ttl: 0})
@@ -41,6 +53,10 @@ defmodule Elide.Cache.ApiRateLimit do
   """
   def allowed?(limitation_key, pid) do
     rate_limit(pid) >= inc(limitation_key, pid)
+  end
+
+  def allowed?(limitation_key) do
+    allowed?(limitation_key, __MODULE__)
   end
 
   defp inc(limitation_key, pid) do
