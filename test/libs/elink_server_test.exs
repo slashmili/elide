@@ -105,7 +105,7 @@ defmodule Elide.ElinkServerTest do
 
     assert elink != nil, "First time we should be able to create elink"
 
-    {:error, ["Reached to Api Rate limit"]} = ElinkServer.create_elink(
+    {:error, :reached_api_rate_limit} = ElinkServer.create_elink(
       [domain: domain, urls: urls, user: nil, limit_per: "127.0.0.1"],
       pid
     )

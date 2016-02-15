@@ -29,7 +29,7 @@ defmodule Elide.ElinkServer do
     urls = opts[:urls]
     cond do
       ! ApiRateLimit.allowed?(limit_per, api_limit_rate) ->
-        {:error, ["Reached to Api Rate limit"]}
+        {:error, :reached_api_rate_limit}
       has_invalid_url?(urls) ->
         {:error, prepare_urls_changeset(urls)}
       true ->
