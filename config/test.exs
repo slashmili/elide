@@ -21,5 +21,5 @@ config :elide, Elide.Repo,
 config :elide, Elide.Elink,
   hashid_salt: ""
 
-config :elide, Elide.Cache.ApiRateLimit,
+config :elide, Elide.ApiRateLimit,
   api_rate_limit: nil

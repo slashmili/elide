@@ -1,7 +1,7 @@
-defmodule Elide.Cache.ApiRateLimitTest do
+defmodule Elide.ApiRateLimitTest do
   use ExUnit.Case, async: true
 
-  alias Elide.Cache.ApiRateLimit
+  alias Elide.ApiRateLimit
 
   test "allow api access per ip in given time period" do
     {:ok, pid} = ApiRateLimit.start_link([

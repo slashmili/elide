@@ -5,7 +5,7 @@ defmodule Elide.ElinkServer do
   use GenServer
 
   alias Elide.{Elink, Repo, Url}
-  alias Elide.Cache.ApiRateLimit
+  alias Elide.ApiRateLimit
 
   def start_link() do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
@@ -17,7 +17,7 @@ defmodule Elide.ElinkServer do
 
   @doc false
   def create_elink(opts) do
-    create_elink(opts, :elide_cache_api_rate_limit)
+    create_elink(opts, :elide_api_rate_limit)
   end
 
   @doc """

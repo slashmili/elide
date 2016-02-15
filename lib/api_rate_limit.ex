@@ -1,4 +1,4 @@
-defmodule Elide.Cache.ApiRateLimit do
+defmodule Elide.ApiRateLimit do
   @moduledoc """
   Keep track of api usage per given key, like ip address or user id
 
@@ -32,7 +32,7 @@ defmodule Elide.Cache.ApiRateLimit do
       ttl_check: :timer.minutes(1)
     ]
     gen_server_options = [
-      name: :elide_cache_api_rate_limit
+      name: :elide_api_rate_limit
     ]
     start_link(options, gen_server_options)
   end
@@ -43,12 +43,12 @@ defmodule Elide.Cache.ApiRateLimit do
 
   defp rate_limit(pid, limit) do
     pid
-    |> ConCache.put("rate_limit_#{:elide_cache_api_rate_limit}", %ConCache.Item{value: limit, ttl: 0})
+    |> ConCache.put("rate_limit_#{:elide_api_rate_limit}", %ConCache.Item{value: limit, ttl: 0})
   end
 
   defp rate_limit(pid) do
     pid
-    |> ConCache.get("rate_limit_#{:elide_cache_api_rate_limit}")
+    |> ConCache.get("rate_limit_#{:elide_api_rate_limit}")
   end
 
   @doc """
@@ -60,7 +60,7 @@ defmodule Elide.Cache.ApiRateLimit do
   end
 
   def validate_limit!(limitation_key) do
-    validate_limit!(limitation_key, :elide_cache_api_rate_limit)
+    validate_limit!(limitation_key, :elide_api_rate_limit)
   end
 
   defp inc(limitation_key, pid) do
