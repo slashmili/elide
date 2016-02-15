@@ -5,7 +5,7 @@ defmodule Elide.ApiRateLimit do
       iex > {:ok, cache} = ApiRateLimit.start_link(
             [api_rate_limit: 2, ttl: :timer.hours(1), ttl_check: :timer.minutes(1)]
             )
-      iex > ApiRateLimit.validlimitation_key("127.0.0.1", cache)
+      iex > ApiRateLimit.validate_limli!("127.0.0.1", cache)
       true
       iex > ApiRateLimit.validate_limli!("127.0.0.1", cache)
       true
