@@ -27,7 +27,7 @@ defmodule Elide.Cache.ApiRateLimit do
 
   defp rate_limit(pid, limit) do
     pid
-    |> ConCache.put("rate_limit_#{__MODULE__}", limit)
+    |> ConCache.put("rate_limit_#{__MODULE__}", %ConCache.Item{value: limit, ttl: 0})
   end
 
   defp rate_limit(pid) do
