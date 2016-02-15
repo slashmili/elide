@@ -5,11 +5,11 @@ defmodule Elide.Cache.ApiRateLimit do
       iex > {:ok, cache} = ApiRateLimit.start_link(
             [api_rate_limit: 2, ttl: :timer.hours(1), ttl_check: :timer.minutes(1)]
             )
-      iex > ApiRateLimit.allowed?("127.0.0.1", cache)
+      iex > ApiRateLimit.validlimitation_key("127.0.0.1", cache)
       true
-      iex > ApiRateLimit.allowed?("127.0.0.1", cache)
+      iex > ApiRateLimit.validate_limli!("127.0.0.1", cache)
       true
-      iex > ApiRateLimit.allowed?("127.0.0.1", cache)
+      iex > ApiRateLimit.like!("127.0.0.1", cache)
       false
 
   """
@@ -52,15 +52,15 @@ defmodule Elide.Cache.ApiRateLimit do
   end
 
   @doc """
-  Checkes if the given key has reached it's limit on
-  given period of time
+  Increases the number of access
+  and checkes if the given key has reached it's limit on
   """
-  def allowed?(limitation_key, pid) do
+  def validate_limit!(limitation_key, pid) do
     rate_limit(pid) >= inc(limitation_key, pid)
   end
 
-  def allowed?(limitation_key) do
-    allowed?(limitation_key, :elide_cache_api_rate_limit)
+  def validate_limit!(limitation_key) do
+    validate_limit!(limitation_key, :elide_cache_api_rate_limit)
   end
 
   defp inc(limitation_key, pid) do
