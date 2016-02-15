@@ -2,6 +2,7 @@ defmodule Elide.RateLimiterTest do
   use ExUnit.Case, async: true
 
   alias Elide.RateLimiter
+  doctest RateLimiter
 
   test "allow api access per ip in given time period" do
     {:ok, pid} = RateLimiter.start_link([
@@ -10,10 +11,10 @@ defmodule Elide.RateLimiterTest do
       api_rate_limit: 1
     ])
 
-    assert RateLimiter.allowed?({127, 0, 0, 1}, pid)
-    refute RateLimiter.allowed?({127, 0, 0, 1}, pid)
+    assert RateLimiter.check_limit!({127, 0, 0, 1}, pid)
+    refute RateLimiter.check_limit!({127, 0, 0, 1}, pid)
 
-    assert RateLimiter.allowed?("127.0.0.2", pid)
+    assert RateLimiter.check_limit!("127.0.0.2", pid)
 
     pid |> RateLimiter.stop
   end
@@ -25,13 +26,13 @@ defmodule Elide.RateLimiterTest do
       api_rate_limit: 2
     ])
 
-    assert RateLimiter.allowed?("127.0.0.1", pid), "First access should be allowed"
+    assert RateLimiter.check_limit!("127.0.0.1", pid), "First access should be allowed"
     #TODO: find a better way to simulate the time movement
     :timer.sleep(100)
-    assert RateLimiter.allowed?("127.0.0.1", pid), "Second access should be allowed"
-    refute RateLimiter.allowed?("127.0.0.1", pid), "Third access in same time period should be denied"
+    assert RateLimiter.check_limit!("127.0.0.1", pid), "Second access should be allowed"
+    refute RateLimiter.check_limit!("127.0.0.1", pid), "Third access in same time period should be denied"
     :timer.sleep(400)
-    assert RateLimiter.allowed?("127.0.0.1", pid), "Forth access happens in new time window shoud be allowed"
+    assert RateLimiter.check_limit!("127.0.0.1", pid), "Forth access happens in new time window shoud be allowed"
 
     pid |> RateLimiter.stop
   end

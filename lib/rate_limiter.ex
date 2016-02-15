@@ -2,16 +2,14 @@ defmodule Elide.RateLimiter do
   @moduledoc """
   Keep track of api usage per given key, like ip address or user id
 
-      iex > {:ok, cache} = RateLimiter.start_link(
-            [api_rate_limit: 2, ttl: :timer.hours(1), ttl_check: :timer.minutes(1)]
-            )
-      iex > RateLimiter.allowed?("127.0.0.1", cache)
+      iex> {:ok, cache} = RateLimiter.start_link(
+      ...>   [api_rate_limit: 2, ttl: :timer.hours(1), ttl_check: :timer.minutes(1)])
+      iex> RateLimiter.check_limit!("127.0.0.1", cache)
       true
-      iex > RateLimiter.allowed?("127.0.0.1", cache)
+      iex> RateLimiter.check_limit!("127.0.0.1", cache)
       true
-      iex > RateLimiter.allowed?("127.0.0.1", cache)
+      iex> RateLimiter.check_limit!("127.0.0.1", cache)
       false
-
   """
 
   @doc """
@@ -55,12 +53,12 @@ defmodule Elide.RateLimiter do
   Checkes if the given key has reached it's limit on
   given period of time
   """
-  def allowed?(limitation_key, pid) do
+  def check_limit!(limitation_key, pid) do
     rate_limit(pid) >= inc(limitation_key, pid)
   end
 
-  def allowed?(limitation_key) do
-    allowed?(limitation_key, :elide_cache_api_rate_limit)
+  def check_limit!(limitation_key) do
+    check_limit!(limitation_key, :elide_cache_api_rate_limit)
   end
 
   defp inc(limitation_key, pid) do
