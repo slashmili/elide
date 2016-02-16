@@ -2,10 +2,6 @@
 #
 #     mix run priv/repo/seeds.exs
 #
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Elide.Repo.insert!(%Elide.SomeModel{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+
+#Added default domain
+Elide.Repo.insert!(%Elide.Domain{domain: "localhost:4000"})

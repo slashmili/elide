@@ -6,8 +6,10 @@
 To start your Phoenix app:
 
   1. Install dependencies with `mix deps.get`
-  2. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  3. Start Phoenix endpoint with `mix phoenix.server`
+  2. Install web dependencies with `npm install && ./node_modules/brunch/bin/brunch build`
+  3. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+  4. Execute the seed `mix run priv/repo/seeds.exs`
+  5. Start Phoenix endpoint with `mix phoenix.server`
 
 
 ## Test

@@ -7,3 +7,10 @@ build-img:
 
 test:
 	docker-compose -f docker/test/docker-compose.yml run test mix test
+
+build-doc:
+	rm -rf gh-pages
+	git clone -b gh-pages git@github.com:slashmili/elide.git gh-pages
+	mix docs
+	cp -r doc/* gh-pages
+	cd gh-pages && git add . && git commit -m "Docs updated at $$(date  +'%Y-%m-%d %H:%M:%S')"
