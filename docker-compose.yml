@@ -1,0 +1,14 @@
+elide:
+    build: .
+    volumes:
+        - ./:/code
+    working_dir: /code
+    links:
+        - postgres:postgres-test.local
+    ports:
+        - 4000
+    env_file:
+        - ./env
+postgres:
+    image: postgres:latest
+
