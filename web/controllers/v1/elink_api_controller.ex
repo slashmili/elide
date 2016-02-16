@@ -28,7 +28,8 @@ defmodule Elide.V1.ElinkApiController do
     elink_result = ElinkServer.create_elink(
       domain: domain,
       user: nil,
-      urls: urls
+      urls: urls,
+      limit_per: conn.remote_ip
     )
 
     case elink_result do
@@ -40,6 +41,10 @@ defmodule Elide.V1.ElinkApiController do
         conn
         |> put_status(:created)
         |> render("show.json", elink: elink_json)
+      {:error, :reached_api_rate_limit} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render("error.json", errors: [%{"api" => ["Reached max api usage, retry in an hour"]}])
       {:error, changesets} ->
         conn
         |> put_status(:unprocessable_entity)

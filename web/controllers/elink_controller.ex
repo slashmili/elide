@@ -27,7 +27,8 @@ defmodule Elide.ElinkController do
     elink_result = ElinkServer.create_elink(
       domain: domain,
       user: user,
-      urls: urls |> Map.values
+      urls: urls |> Map.values,
+      limit_per: conn.remote_ip
     )
 
     case elink_result do
