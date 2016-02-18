@@ -10,7 +10,7 @@ defmodule Elide.ElinkSeqServer do
   """
 
   import Ecto.Query, only: [from: 1, from: 2]
-  alias Elide.{Repo, Elink, Domain}
+  alias Elide.{Repo, Elink}
 
   @doc false
   def start_link() do
@@ -23,11 +23,6 @@ defmodule Elide.ElinkSeqServer do
       state = Map.put state, domain_id, seq + 1
       {seq + 1, state}
     end)
-  end
-
-  def fetch_next_seq(domain_id) do
-    domain_id
-    |> get_sequence
   end
 
   @doc """
@@ -48,6 +43,11 @@ defmodule Elide.ElinkSeqServer do
   """
   def nextval(domain) do
     nextval(domain.id)
+  end
+
+  defp fetch_next_seq(domain_id) do
+    domain_id
+    |> get_sequence
   end
 
   @doc false
