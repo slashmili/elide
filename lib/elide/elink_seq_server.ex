@@ -20,7 +20,7 @@ defmodule Elide.ElinkSeqServer do
   def nextval(domain_id) when is_integer(domain_id) do
     Agent.get_and_update(__MODULE__, fn(state) ->
       seq = case Map.get(state, domain_id) do
-        nil -> fetch_next_seq(domain_id)
+        nil -> get_sequence(domain_id)
         seq -> seq
       end
       state = Map.put state, domain_id, seq + 1
@@ -48,18 +48,10 @@ defmodule Elide.ElinkSeqServer do
     nextval(domain.id)
   end
 
-  defp fetch_next_seq(domain_id) do
-    domain_id
-    |> get_sequence
-  end
-
   @doc false
   def get_sequence(domain_id) when is_integer(domain_id)  do
     last_seq_query = from e in Elink, select: max(e.elink_seq),  where: e.domain_id == ^domain_id
-    seq =
-      last_seq_query
-      |> Repo.one
-    seq || 0
+    seq = Repo.one(last_seq_query) || 0
   end
 
   @doc """
@@ -68,5 +60,4 @@ defmodule Elide.ElinkSeqServer do
   def get_sequence(domain) do
     get_sequence(domain.id)
   end
-
 end
