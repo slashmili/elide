@@ -19,7 +19,10 @@ defmodule Elide.ElinkSeqServer do
 
   def nextval(domain_id) when is_integer(domain_id) do
     Agent.get_and_update(__MODULE__, fn(state) ->
-      seq = Map.get state, domain_id, fetch_next_seq(domain_id)
+      seq = case Map.get(state, domain_id) do
+        nil -> fetch_next_seq(domain_id)
+        seq -> seq
+      end
       state = Map.put state, domain_id, seq + 1
       {seq + 1, state}
     end)
