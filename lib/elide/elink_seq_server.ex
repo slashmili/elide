@@ -10,25 +10,19 @@ defmodule Elide.ElinkSeqServer do
   """
 
   import Ecto.Query, only: [from: 1, from: 2]
-  alias Elide.{Repo, Elink, Domain}
-
-  @doc """
-  Initialize ElinkSeqServer state
-  """
-  def init do
-    Repo.all(Domain)
-    |> Enum.map(fn(d) -> {d.id, get_sequence(d)} end)
-    |> Enum.into(%{})
-  end
+  alias Elide.{Repo, Elink}
 
   @doc false
   def start_link() do
-    Agent.start_link(fn -> init end, name: __MODULE__)
+    Agent.start_link(fn -> Map.new end, name: __MODULE__)
   end
 
   def nextval(domain_id) when is_integer(domain_id) do
     Agent.get_and_update(__MODULE__, fn(state) ->
-      seq = Map.get state, domain_id, 0
+      seq = case Map.get(state, domain_id) do
+        nil -> get_sequence(domain_id)
+        seq -> seq
+      end
       state = Map.put state, domain_id, seq + 1
       {seq + 1, state}
     end)
@@ -54,15 +48,16 @@ defmodule Elide.ElinkSeqServer do
     nextval(domain.id)
   end
 
+  @doc false
+  def get_sequence(domain_id) when is_integer(domain_id)  do
+    last_seq_query = from e in Elink, select: max(e.elink_seq),  where: e.domain_id == ^domain_id
+    seq = Repo.one(last_seq_query) || 0
+  end
+
   @doc """
   Gets the last used sequence for given domain
   """
   def get_sequence(domain) do
-    domain_id = domain.id
-    last_seq_query = from e in Elink, select: max(e.elink_seq),  where: e.domain_id == ^domain_id
-    seq =
-      last_seq_query
-      |> Repo.one
-    seq || 1
+    get_sequence(domain.id)
   end
 end

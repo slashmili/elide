@@ -18,10 +18,6 @@ defmodule Elide.ElinkSeqServerTest do
 
   test "find elink sequence for first elink for given domain" do
     domain = insert_domain()
-    assert ElinkSeqServer.get_sequence(domain) == 1
-  end
-
-  test "fetch elink sequence for all domains" do
-    assert ElinkSeqServer.init |> is_map
+    assert ElinkSeqServer.get_sequence(domain) == 0
   end
 end
