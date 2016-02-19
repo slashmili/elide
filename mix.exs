@@ -33,10 +33,10 @@ defmodule Elide.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.1.2"},
+    [{:phoenix, "~> 1.1.4"},
      {:phoenix_ecto, "~> 2.0"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_html, "~> 2.3"},
+     {:phoenix_html, "~> 2.4"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
@@ -49,6 +49,8 @@ defmodule Elide.Mixfile do
      {:exrm, "~> 1.0.0-rc7"},
      {:con_cache, "~> 0.11.0"},
      {:exactor, "~> 2.2.0"},
+     {:erlware_commons, github: "erlware/erlware_commons", override: true},
+     {:cf, "~> 0.2.1", override: true}
    ]
   end
 
