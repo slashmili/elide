@@ -64,4 +64,8 @@ defmodule Elide.Elink do
     config = Application.get_env(:elide, __MODULE__)
     config[:hashid_salt]
   end
+
+  def owned_by(elink, user) do
+    from e in elink, where: e.user_id == ^user.id
+  end
 end

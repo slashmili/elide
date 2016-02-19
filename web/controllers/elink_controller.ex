@@ -7,8 +7,11 @@ defmodule Elide.ElinkController do
 
   def index(conn, _params) do
     changeset = Elink.changeset(%Elink{})
+    user = conn.assigns[:current_user]
     elinks =
-      Repo.all(Elink)
+      Elink
+      |> Elink.owned_by(user)
+      |> Repo.all
       |> Repo.preload(:domain)
       |> Repo.preload(:urls)
       |> Repo.preload(:organization)
