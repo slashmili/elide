@@ -54,4 +54,9 @@ defmodule Elide.Token do
     config = Application.get_env(:elide, Elide.Endpoint)
     config[:secret_key_base]
   end
+
+  def by_user(user) do
+    from t in __MODULE__,
+      where: t.user_id == ^ user.id
+  end
 end

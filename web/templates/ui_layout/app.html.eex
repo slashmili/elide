@@ -29,6 +29,13 @@
                     <li>
                         <%= link "Organization", to: organization_path(@conn, :index) %>
                     </li>
+                    <li>
+                      <h3>Settings</h3>
+                    </li>
+                    <li>
+                        <%= link "Access tokens", to: token_path(@conn, :index) %>
+                    </li>
+
                 </ul>
             </div>
             <!-- /#sidebar-wrapper -->
