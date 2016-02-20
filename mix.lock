@@ -18,6 +18,7 @@
   "hashids": {:hex, :hashids, "2.0.1"},
   "httpoison": {:hex, :httpoison, "0.8.0"},
   "idna": {:hex, :idna, "1.0.3"},
+  "json_web_token": {:hex, :json_web_token, "0.2.4"},
   "meck": {:hex, :meck, "0.8.4"},
   "mimerl": {:hex, :mimerl, "1.0.2"},
   "mimetype_parser": {:hex, :mimetype_parser, "0.1.0"},

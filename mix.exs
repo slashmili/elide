@@ -22,7 +22,7 @@ defmodule Elide.Mixfile do
     [mod: {Elide, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex, :oauth2, :hashids, :connection,
-                    :con_cache]]
+                    :con_cache, :json_web_token]]
   end
 
   # Specifies which paths to compile per environment.
@@ -49,6 +49,7 @@ defmodule Elide.Mixfile do
      {:exrm, "~> 1.0.0-rc7"},
      {:con_cache, "~> 0.11.0"},
      {:exactor, "~> 2.2.0"},
+     {:json_web_token, "~> 0.2.4"},
    ]
   end
 
