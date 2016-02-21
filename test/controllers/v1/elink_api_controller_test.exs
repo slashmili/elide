@@ -1,7 +1,7 @@
 defmodule Elide.Api.V1.ElinkControllerTest do
   use Elide.ConnCase
 
-  alias Elide.Url
+  alias Elide.{Url, Token, Elink}
 
   setup do
     domain = insert_domain()
@@ -79,6 +79,45 @@ defmodule Elide.Api.V1.ElinkControllerTest do
     assert json == %{"errors" => [%{"auth" => ["invalid access"]}]}
 
     refute Repo.get_by(Url, %{link: url})
+  end
+
+  test "creates an elink for a user with providing auth token" do
+    user = insert_user
+    token = insert_token(%{user_id: user.id, description: "foo"})
+
+    domain = insert_domain
+    url = unique_url
+    json_params = %{
+      "urls" => [url],
+      "domain" => domain.domain
+    }
+
+    conn = put_req_header(conn, "authorization", Token.get_key(token))
+    conn = post conn, elink_api_path(conn, :create, json_params)
+
+    json = json_response(conn, 201)
+    %{"id" => elink_hash} = json
+    elink =
+      Elink.by_slug(elink_hash)
+      |> Repo.one
+    assert elink.user_id == user.id
+  end
+
+  test "creates an elink for a user with a removed token" do
+    user = insert_user
+    token = %Token{user_id: user.id, description: "foo", id: 0}
+
+    domain = insert_domain
+    url = unique_url
+    json_params = %{
+      "urls" => [url],
+      "domain" => domain.domain
+    }
+
+    conn = put_req_header(conn, "authorization", Token.get_key(token))
+    conn = post conn, elink_api_path(conn, :create, json_params)
+
+    assert json_response(conn, 401)
   end
 
   defp unique_url do
