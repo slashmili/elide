@@ -1,6 +1,5 @@
 defmodule Elide.ElinkSeqServerTest do
   use ExUnit.Case, async: false
-  doctest Elide.ElinkSeqServer
 
   alias Elide.ElinkSeqServer
   import Elide.TestHelpers
