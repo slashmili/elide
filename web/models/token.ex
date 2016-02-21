@@ -36,7 +36,7 @@ defmodule Elide.Token do
   def by_key!(key) do
     {:ok, claims} = decode(key)
     from t in __MODULE__,
-      where: t.id == ^claims.id and t.id == ^claims.user_id
+      where: t.id == ^claims.id and t.user_id == ^claims.user_id
   end
 
   defp encode(token) do
