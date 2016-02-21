@@ -5,7 +5,10 @@ defmodule Elide.Api.V1.ElinkControllerTest do
 
   setup do
     domain = insert_domain()
-    {:ok, conn: Phoenix.ConnTest.conn(), domain: domain}
+    conn =
+      Phoenix.ConnTest.conn()
+      |> put_req_header("authorization", "open-access")
+    {:ok, conn: conn, domain: domain}
   end
 
   test "creates an elink through api", %{conn: conn, domain: domain} do
@@ -60,6 +63,22 @@ defmodule Elide.Api.V1.ElinkControllerTest do
 
     json = json_response(conn, 422)
     assert json == %{"errors" => [%{"domain" => ["domain doesn't exist"]}]}
+  end
+
+  test "calling api without authorization header should fail and shouldn't create elink" do
+    domain = insert_domain
+    url = unique_url
+    json_params = %{
+      "urls" => [url],
+      "domain" => domain.domain
+    }
+    conn = Phoenix.ConnTest.conn()
+    conn = post conn, elink_api_path(conn, :create, json_params)
+
+    json = json_response(conn, :unauthorized)
+    assert json == %{"errors" => [%{"auth" => ["invalid access"]}]}
+
+    refute Repo.get_by(Url, %{link: url})
   end
 
   defp unique_url do

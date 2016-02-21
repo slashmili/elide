@@ -8,14 +8,35 @@ defmodule Elide.V1.ElinkApiController do
       domain_addr
       |> Domain.by_address
       |> Repo.one
-    create_elink(conn, urls, domain)
+
+    conn
+    |> auth
+    |> create_elink(urls, domain)
   end
 
   def create(conn, %{"urls" => urls}) do
     domain =
       Domain.default_domain
       |> Repo.one
-    create_elink(conn, urls, domain)
+
+    conn
+    |> auth
+    |> create_elink(urls, domain)
+  end
+
+  defp auth(conn) do
+    auth_header =
+      conn.req_headers
+      |> Enum.filter(&elem(&1, 0) == "authorization")
+    cond do
+      Enum.count(auth_header) == 0 -> put_status(conn, :unauthorized)
+      {"authorization", "open-access"} == hd(auth_header) -> conn
+    end
+  end
+
+  def create_elink(conn = %Plug.Conn{status: 401}, _urls, _domain) do
+    conn
+    |> render("error.json", errors: [%{"auth" => ["invalid access"]}])
   end
 
   def create_elink(conn, _urls, nil) do
