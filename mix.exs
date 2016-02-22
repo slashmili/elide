@@ -58,6 +58,7 @@ defmodule Elide.Mixfile do
       formatter_opts: [gfm: true],
       extras: [
         "docs/Getting Started.md",
+        "docs/Elide API.md",
       ]]
   end
   # Aliases are shortcut or tasks specific to the current project.

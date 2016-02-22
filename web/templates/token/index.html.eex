@@ -1,7 +1,7 @@
 <h2>Listing tokens</h2>
 <div>
   <i>
-    Tokens you have generated that can be used to access the <a href="http://dev.elid.me/api.html">Elide API</a>.
+    Tokens you have generated that can be used to access the <a href="http://dev.elid.me/elide-api.html">Elide API</a>.
   </i>
 </div>
 <table class="table tokens">
