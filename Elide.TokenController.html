@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.11.4">
-    <title>Elide.ElinkSeqServer – Elide v0.0.1</title>
+    <title>Elide.TokenController – Elide v0.0.1</title>
     <link rel="stylesheet" href="dist/app-1e374caa3d.css" />
     <script src="dist/sidebar_items.js"></script>
   </head>
@@ -60,20 +60,11 @@
 
       <h1>
         <small class="visible-xs">Elide v0.0.1</small>
-        Elide.ElinkSeqServer
+        Elide.TokenController
         
         
       </h1>
 
-      
-        <section id="moduledoc" class="docstring">
-          <p>  Provides elink sequence for given domain</p>
-<p>  The idea is to keep the elinks as short as possible by creating
-  elink hash per domain. This module is responsible to provide unique
-  hash per domain</p>
-<p>  &gt; It’s not safe to use this module in distributed environment</p>
-
-        </section>
       
 
       
@@ -93,20 +84,26 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_sequence/1">get_sequence(domain_id)</a>
+    <a href="#create/3">create(conn, map, user)</a>
   </div>
-  
-    <div class="summary-synopsis"><p>Gets the last used sequence for given domain</p>
-</div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#nextval/1">nextval(domain_id)</a>
+    <a href="#delete/3">delete(conn, map, user)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Returns the next sequence id for given domain_id</p>
 </div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#index/3">index(conn, params, user)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#new/3">new(conn, params, user)</a>
+  </div>
   
 </div>
 
@@ -130,42 +127,56 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="get_sequence/1">
+          <div class="detail" id="create/3">
   <div class="detail-header">
-    <a href="#get_sequence/1" class="detail-link" title="Link to this function">
+    <a href="#create/3" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">get_sequence(domain_id)</span>
+    <span class="signature">create(conn, map, user)</span>
       
   </div>
   
   <section class="docstring">
-    <p>Gets the last used sequence for given domain</p>
-
+    
   </section>
 </div>
-<div class="detail" id="nextval/1">
+<div class="detail" id="delete/3">
   <div class="detail-header">
-    <a href="#nextval/1" class="detail-link" title="Link to this function">
+    <a href="#delete/3" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">nextval(domain_id)</span>
+    <span class="signature">delete(conn, map, user)</span>
       
   </div>
   
   <section class="docstring">
-    <p>Returns the next sequence id for given domain_id</p>
-<pre><code class="iex elixir">iex&gt; Elide.ElinkSeqServer.nextval(20)
-1
-iex&gt; Elide.ElinkSeqServer.nextval(20)
-2</code></pre>
-<p>Returns the next sequence id for given domain</p>
-<pre><code class="iex elixir">iex&gt; domain = %Elide.Domain{id: 12}
-iex&gt; Elide.ElinkSeqServer.nextval(domain)
-1
-iex&gt; Elide.ElinkSeqServer.nextval(domain)
-2</code></pre>
-
+    
+  </section>
+</div>
+<div class="detail" id="index/3">
+  <div class="detail-header">
+    <a href="#index/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">index(conn, params, user)</span>
+      
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="new/3">
+  <div class="detail-header">
+    <a href="#new/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">new(conn, params, user)</span>
+      
+  </div>
+  
+  <section class="docstring">
+    
   </section>
 </div>
 

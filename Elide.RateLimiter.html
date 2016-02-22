@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.11.4">
-    <title>Elide.ElinkSeqServer – Elide v0.0.1</title>
+    <title>Elide.RateLimiter – Elide v0.0.1</title>
     <link rel="stylesheet" href="dist/app-1e374caa3d.css" />
     <script src="dist/sidebar_items.js"></script>
   </head>
@@ -60,18 +60,22 @@
 
       <h1>
         <small class="visible-xs">Elide v0.0.1</small>
-        Elide.ElinkSeqServer
+        Elide.RateLimiter
         
         
       </h1>
 
       
         <section id="moduledoc" class="docstring">
-          <p>  Provides elink sequence for given domain</p>
-<p>  The idea is to keep the elinks as short as possible by creating
-  elink hash per domain. This module is responsible to provide unique
-  hash per domain</p>
-<p>  &gt; It’s not safe to use this module in distributed environment</p>
+          <p>Keep track of api usage per given key, like ip address or user id</p>
+<pre><code class="iex elixir">iex&gt; {:ok, cache} = RateLimiter.start_link(
+...&gt;   [api_rate_limit: 2, ttl: :timer.hours(1), ttl_check: :timer.minutes(1)])
+iex&gt; RateLimiter.check_limit!(&quot;127.0.0.1&quot;, cache)
+true
+iex&gt; RateLimiter.check_limit!(&quot;127.0.0.1&quot;, cache)
+true
+iex&gt; RateLimiter.check_limit!(&quot;127.0.0.1&quot;, cache)
+false</code></pre>
 
         </section>
       
@@ -93,19 +97,32 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_sequence/1">get_sequence(domain_id)</a>
+    <a href="#check_limit!/1">check_limit!(limitation_key)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Gets the last used sequence for given domain</p>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#check_limit!/2">check_limit!(limitation_key, pid)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checkes if the given key has reached it’s limit on
+given period of time</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#nextval/1">nextval(domain_id)</a>
+    <a href="#start_link/0">start_link()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Returns the next sequence id for given domain_id</p>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_link/2">start_link(options, gen_server_options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Creates a cache process, with capability of ttl for each cache item</p>
 </div>
   
 </div>
@@ -130,41 +147,59 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="get_sequence/1">
+          <div class="detail" id="check_limit!/1">
   <div class="detail-header">
-    <a href="#get_sequence/1" class="detail-link" title="Link to this function">
+    <a href="#check_limit!/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">get_sequence(domain_id)</span>
+    <span class="signature">check_limit!(limitation_key)</span>
       
   </div>
   
   <section class="docstring">
-    <p>Gets the last used sequence for given domain</p>
+    
+  </section>
+</div>
+<div class="detail" id="check_limit!/2">
+  <div class="detail-header">
+    <a href="#check_limit!/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">check_limit!(limitation_key, pid)</span>
+      
+  </div>
+  
+  <section class="docstring">
+    <p>Checkes if the given key has reached it’s limit on
+given period of time</p>
 
   </section>
 </div>
-<div class="detail" id="nextval/1">
+<div class="detail" id="start_link/0">
   <div class="detail-header">
-    <a href="#nextval/1" class="detail-link" title="Link to this function">
+    <a href="#start_link/0" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">nextval(domain_id)</span>
+    <span class="signature">start_link()</span>
       
   </div>
   
   <section class="docstring">
-    <p>Returns the next sequence id for given domain_id</p>
-<pre><code class="iex elixir">iex&gt; Elide.ElinkSeqServer.nextval(20)
-1
-iex&gt; Elide.ElinkSeqServer.nextval(20)
-2</code></pre>
-<p>Returns the next sequence id for given domain</p>
-<pre><code class="iex elixir">iex&gt; domain = %Elide.Domain{id: 12}
-iex&gt; Elide.ElinkSeqServer.nextval(domain)
-1
-iex&gt; Elide.ElinkSeqServer.nextval(domain)
-2</code></pre>
+    
+  </section>
+</div>
+<div class="detail" id="start_link/2">
+  <div class="detail-header">
+    <a href="#start_link/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">start_link(options, gen_server_options \\ [])</span>
+      
+  </div>
+  
+  <section class="docstring">
+    <p>Creates a cache process, with capability of ttl for each cache item</p>
+<p>See <a href="https://hexdocs.pm/con_cache/">ConCache</a> for more details.</p>
 
   </section>
 </div>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>Elide API – Elide v0.0.1</title>
+    <link rel="stylesheet" href="dist/app-1e374caa3d.css" />
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="extras">
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="getting-started.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elide
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.0.1
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+<h1>Elide API</h1>
+<p>Elide provides API for users to interact with the app:</p>
+<ul>
+<li>Public/Private API to create Elink
+</li>
+</ul>
+<h2>Create Elink</h2>
+<p>URL: <a href="http://elid.me/api/v1/elinks">http://elid.me/api/v1/elinks</a></p>
+<p>Method: POST</p>
+<p>Headers:</p>
+<pre><code class="elixir">Authorization: &lt;token&gt;
+Content-Type: application/json</code></pre>
+<p>Payload:</p>
+<pre><code class="elixir">{
+  &quot;urls&quot;: [&lt;url1&gt;, &lt;url2&gt;, ...]
+  &quot;domain&quot;: &lt;domain|optional&gt;
+}</code></pre>
+<p>For anonymous access you can use <code class="inline">open-access</code> in Authorization header
+or you can generate the token after sign up. <code class="inline">open-access</code> token can only
+be used 100 times per hour from one IP address. Users generated token has higher threshold.</p>
+<h3>Examples:</h3>
+<ol>
+<li>Calling API with anonymous token and the default domain:
+</li>
+</ol>
+<pre><code class="elixir">POST /api/v1/elinks HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate
+Authorization: open-access
+Connection: keep-alive
+Content-Length: 38
+Content-Type: application/json
+Host: elid.me
+
+{
+    &quot;urls&quot;: [
+        &quot;http://google.com&quot;
+    ]
+}
+
+HTTP/1.1 201 Created
+cache-control: max-age=0, private, must-revalidate
+content-length: 47
+content-type: application/json; charset=utf-8
+date: Mon, 22 Feb 2016 15:52:00 GMT
+server: Cowboy
+
+{
+    &quot;id&quot;: &quot;lYfo&quot;,
+    &quot;short_url&quot;: &quot;elid.me/lYfo&quot;
+}</code></pre>
+<ol>
+<li>Calling API with user token and specific domain
+</li>
+</ol>
+<pre><code class="elixir">POST /api/v1/elinks HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpZCI6M30.dwAFBwAGzWFlNvBI3qXZ0Jlpb4muYThk4QAiAoVItN0
+Connection: keep-alive
+Content-Length: 70
+Content-Type: application/json
+Host: elid.me
+
+{
+    &quot;domain&quot;: &quot;elid.me&quot;,
+    &quot;urls&quot;: [
+        &quot;http://google.com&quot;, &quot;http://github.com&quot;
+    ]
+}
+
+HTTP/1.1 201 Created
+cache-control: max-age=0, private, must-revalidate
+content-length: 47
+content-type: application/json; charset=utf-8
+date: Mon, 22 Feb 2016 15:56:01 GMT
+server: Cowboy
+
+{
+    &quot;id&quot;: &quot;mZfp&quot;,
+    &quot;short_url&quot;: &quot;elid.me/mZfp&quot;
+}</code></pre>
+
+    <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-6d2e071366.js"></script>
+  </body>
+</html>
+
