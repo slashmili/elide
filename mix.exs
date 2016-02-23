@@ -50,6 +50,7 @@ defmodule Elide.Mixfile do
      {:con_cache, "~> 0.11.0"},
      {:exactor, "~> 2.2.0"},
      {:json_web_token, "~> 0.2.4"},
+     {:credo, "~> 0.3", only: [:dev, :test]},
    ]
   end
 
