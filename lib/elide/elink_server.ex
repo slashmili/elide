@@ -42,7 +42,7 @@ defmodule Elide.ElinkServer do
     seq = opts[:domain] |> next_seq
     elink_result =
     %Elink{
-      user_id: opts[:user] && opts[:user].id,
+      user_id: user_id(opts),
       domain_id: opts[:domain].id,
       elink_seq: seq
     }
@@ -63,6 +63,10 @@ defmodule Elide.ElinkServer do
       {:error, changeset} ->
         {:error, [changeset]}
     end
+  end
+
+  defp user_id(opts) do
+    opts[:user] && opts[:user].id || opts[:user_id]
   end
 
   defp next_seq(domain) do

@@ -1,0 +1,34 @@
+<h2>Listing tokens</h2>
+<div>
+  <i>
+    Tokens you have generated that can be used to access the <a href="http://dev.elid.me/elide-api.html">Elide API</a>.
+  </i>
+</div>
+<table class="table tokens">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Token</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for token <- @tokens do %>
+    <tr>
+      <td><%= token.description %></td>
+      <td>
+          <button class="short-url-copy" data-clipboard-text="<%= Elide.Token.get_key(token) %>">
+            <i class="glyphicon glyphicon-copy"></i>
+            <%= Elide.Token.get_key(token) %>
+          </button>
+      </td>
+
+      <td class="text-right">
+        <%= link "Delete", to: token_path(@conn, :delete, token), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+<%= link "New token", to: token_path(@conn, :new) %>

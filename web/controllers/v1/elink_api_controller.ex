@@ -1,21 +1,51 @@
 defmodule Elide.V1.ElinkApiController do
   use Elide.Web, :controller
 
-  alias Elide.{Elink, Domain, ElinkServer}
+  alias Elide.{Elink, Domain, ElinkServer, Token}
 
   def create(conn, %{"urls" => urls, "domain" => domain_addr}) do
     domain =
       domain_addr
       |> Domain.by_address
       |> Repo.one
-    create_elink(conn, urls, domain)
+
+    conn
+    |> auth
+    |> create_elink(urls, domain)
   end
 
   def create(conn, %{"urls" => urls}) do
     domain =
       Domain.default_domain
       |> Repo.one
-    create_elink(conn, urls, domain)
+
+    conn
+    |> auth
+    |> create_elink(urls, domain)
+  end
+
+  defp auth(conn) do
+    auth_header =
+      conn.req_headers
+      |> Enum.filter(&elem(&1, 0) == "authorization")
+    cond do
+      Enum.count(auth_header) == 0 -> put_status(conn, :unauthorized)
+      {"authorization", "open-access"} == hd(auth_header) -> conn
+      {"authorization", auth_token} = hd(auth_header) ->
+        if Token.valid?(auth_token) do
+          case Repo.one(Token.by_key!(auth_token)) do
+            nil -> put_status(conn, :unauthorized)
+            token -> assign(conn, :user_id, token.user_id)
+          end
+        else
+          put_status(conn, :unauthorized)
+        end
+    end
+  end
+
+  def create_elink(conn = %Plug.Conn{status: 401}, _urls, _domain) do
+    conn
+    |> render("error.json", errors: [%{"auth" => ["invalid access"]}])
   end
 
   def create_elink(conn, _urls, nil) do
@@ -27,8 +57,8 @@ defmodule Elide.V1.ElinkApiController do
   def create_elink(conn, urls, domain) do
     elink_result = ElinkServer.create_elink(
       domain: domain,
-      user: nil,
       urls: urls,
+      user_id: conn.assigns[:user_id],
       limit_per: conn.remote_ip
     )
 
