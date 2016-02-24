@@ -28,7 +28,7 @@ defmodule Elide.Token do
 
   def valid?(key) do
     case decode(key) do
-      {:ok, _ } -> true
+      {:ok, _} -> true
       {:error, _} -> false
     end
   end

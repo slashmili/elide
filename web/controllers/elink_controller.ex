@@ -52,7 +52,7 @@ defmodule Elide.ElinkController do
   end
 
   defp get_domain(nil) do
-    [default_domain | _ ] = Repo.all(Domain)
+    [default_domain | _] = Repo.all(Domain)
     default_domain
   end
 
