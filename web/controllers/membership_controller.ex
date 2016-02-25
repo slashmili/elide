@@ -18,7 +18,8 @@ defmodule Elide.MembershipController do
 
   def index(conn, _param, _user, org) do
     memberships =
-      Membership.for_organization(org)
+      org
+      |> Membership.for_organization
       |> Ecto.Query.preload(:user)
       |> Repo.all
     render(conn, "index.html", memberships: memberships, org: org)

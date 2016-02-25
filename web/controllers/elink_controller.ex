@@ -8,7 +8,8 @@ defmodule Elide.ElinkController do
   def index(conn, _params) do
     changeset = Elink.changeset(%Elink{})
     elinks =
-      Repo.all(Elink)
+      Elink
+      |> Repo.all
       |> Repo.preload(:domain)
       |> Repo.preload(:urls)
       |> Repo.preload(:organization)
@@ -51,7 +52,7 @@ defmodule Elide.ElinkController do
   end
 
   defp get_domain(nil) do
-    [default_domain | _ ] = Repo.all(Domain)
+    [default_domain | _] = Repo.all(Domain)
     default_domain
   end
 

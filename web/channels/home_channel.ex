@@ -17,11 +17,12 @@ defmodule Elide.HomeChannel do
 
   def handle_in("create_elink", params, socket) do
     domain = get_domain()
-    ElinkServer.create_elink(
+    elink = ElinkServer.create_elink(
       domain: domain,
       user: nil,
       urls: [params["url"]]
-    ) |> create_elink_response(socket)
+    )
+    elink |> create_elink_response(socket)
   end
 
   defp create_elink_response({:ok, elink}, socket) do
@@ -42,7 +43,7 @@ defmodule Elide.HomeChannel do
   end
 
   defp get_domain() do
-    [default_domain | _ ] = Repo.all(Domain)
+    [default_domain | _] = Repo.all(Domain)
     default_domain
   end
 

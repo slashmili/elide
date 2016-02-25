@@ -3,15 +3,15 @@ defmodule Elide.UserController do
 
   alias Elide.{User, Auth}
 
-  def provider(conn, %{"provider" => provider}) do
+  def provider(conn, %{"provider" => my_provider}) do
     conn
-    |> redirect(external: Auth.authorize_url!(provider))
+    |> redirect(external: Auth.authorize_url!(my_provider))
     |> halt
   end
 
-  def callback(conn, %{"provider" => provider, "code" => code}) do
+  def callback(conn, %{"provider" => my_provider, "code" => code}) do
     user =
-      provider
+      my_provider
       |> Auth.get_user_details!(code)
       |> get_or_create_user
 

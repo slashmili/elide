@@ -10,18 +10,20 @@ defmodule Elide.OAuth2.Google do
   @google_api_scope "https://www.googleapis.com/auth/userinfo.email"
 
   defp config do
-    [strategy: __MODULE__,
-     site: "https://accounts.google.com",
-     authorize_url: "/o/oauth2/auth",
-     token_url: "/o/oauth2/token"]
+    conf = [
+      strategy: __MODULE__,
+      site: "https://accounts.google.com",
+      authorize_url: "/o/oauth2/auth",
+      token_url: "/o/oauth2/token"
+    ]
+    credentials = Application.get_env(:elide, __MODULE__)
+    Keyword.merge(credentials, conf)
   end
 
   # Public API
 
   def client do
-    Application.get_env(:elide, __MODULE__)
-    |> Keyword.merge(config())
-    |> OAuth2.Client.new()
+    OAuth2.Client.new config
   end
 
   def authorize_url!(params \\ []) do
@@ -37,12 +39,13 @@ defmodule Elide.OAuth2.Google do
 
   # Strategy Callbacks
 
-  def authorize_url(client, params) do
-    AuthCode.authorize_url(client, params)
+  def authorize_url(my_client, params) do
+    my_client
+    |> AuthCode.authorize_url(params)
   end
 
-  def get_token(client, params, headers) do
-    client
+  def get_token(my_client, params, headers) do
+    my_client
     |> put_header("Accept", "application/json")
     |> AuthCode.get_token(params, headers)
   end
