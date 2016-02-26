@@ -13,7 +13,7 @@ defmodule Elide.Repo.Migrations.CreateStat do
       timestamps
     end
     create index(:stats, [:elink_id])
-    create index(:stats, [:elink_id, :tag, :value], unique: true)
+    create index(:stats, [:elink_id, :tag, :value, :visiting_interval], unique: true)
   end
 
   def down do
