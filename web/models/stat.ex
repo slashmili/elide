@@ -11,7 +11,7 @@ defmodule Elide.Stat do
     timestamps
   end
 
-  @required_fields ~w(tag value count visited_at)
+  @required_fields ~w(elink_id tag value count visited_at)
   @optional_fields ~w()
 
   @valid_tags ["browser", "referrer", "country", "platform"]
