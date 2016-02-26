@@ -3,7 +3,7 @@ defmodule Elide.StatTest do
 
   alias Elide.Stat
 
-  @valid_attrs %{elink_id: 1, count: 42, tag: "browser", value: "some content", visited_at: "2010-04-17 14:00:00"}
+  @valid_attrs %{elink_id: 1, count: 42, tag: "browser", value: "some content", visiting_interval: "2010-04-17 14:00:00"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

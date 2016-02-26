@@ -5,13 +5,13 @@ defmodule Elide.Stat do
     field :tag, :string
     field :value, :string
     field :count, :integer
-    field :visited_at, Ecto.DateTime
+    field :visiting_interval, Ecto.DateTime
     belongs_to :elink, Elide.Elink
 
     timestamps
   end
 
-  @required_fields ~w(elink_id tag value count visited_at)
+  @required_fields ~w(elink_id tag value count visiting_interval)
   @optional_fields ~w()
 
   @valid_tags ["browser", "referrer", "country", "platform"]
