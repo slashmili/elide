@@ -2,6 +2,6 @@ sudo: false
 language: elixir
 elixir: 1.2.1
 addons:
-  - postgresql: "9.4"
+  - postgresql: "9.5"
 before_script:
   - cp config/travis.exs config/test.exs
