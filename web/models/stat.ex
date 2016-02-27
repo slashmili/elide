@@ -5,7 +5,7 @@ defmodule Elide.Stat do
     field :tag, :string
     field :value, :string
     field :count, :integer
-    field :visiting_interval, Ecto.DateTime
+    field :visiting_interval, Timex.Ecto.DateTime
     belongs_to :elink, Elide.Elink
 
     timestamps
