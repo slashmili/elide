@@ -7,7 +7,5 @@ elide:
         - postgres:postgres-test.local
     ports:
         - 4000
-    env_file:
-        - ./env
 postgres:
     image: postgres:9.5
