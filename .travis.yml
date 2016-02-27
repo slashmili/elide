@@ -1,6 +1,4 @@
 sudo: required
-language: elixir
-elixir: 1.2.1
 services:
   - docker
 script:
