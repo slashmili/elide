@@ -3,7 +3,7 @@ defmodule Elide.StatServer do
 
   def inc_elink_visit(opts) do
     visiting_interval =
-      opts[:visited_at]
+      (opts[:visited_at] || Date.now)
       |> reset_hour
       |> to_tuple
 

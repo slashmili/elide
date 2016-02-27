@@ -25,6 +25,17 @@ defmodule Elide.StatServerTest do
     assert stat.visiting_interval == Timex.Date.from({{2012, 10, 10}, {15, 0, 0, 0}})
   end
 
+  test "use current time iv visited_at is not passed", %{elink: elink} do
+    StatServer.inc_elink_visit(
+    elink: elink, browser: "Chrome",
+    country: "MY", referrer: "http://example.com",
+    platform: "Mac"
+    )
+
+    stat = Repo.get_by(Stat, %{elink_id: elink.id, tag: "browser"})
+    assert stat.visiting_interval
+  end
+
   test "increasing stat should create 4 records", %{elink: elink} do
     date = Timex.Date.from({{2012, 10, 10}, {15, 40, 59, 0}})
     StatServer.inc_elink_visit(
