@@ -1,6 +1,8 @@
 sudo: required
+language: elixir
 elixir: 1.2.1
 services:
   - docker
 script:
+  - docker-compose  run elide mix deps.get
   - docker-compose  run elide mix test
