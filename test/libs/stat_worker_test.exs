@@ -6,7 +6,7 @@ defmodule Elide.StatWorkerTest do
   alias Elide.{Repo, Stat, StatWorker}
   import Ecto.Query, only: [from: 2]
 
-  @worker_id 1
+  @worker_id 100
 
   setup do
     domain = insert_domain
