@@ -27,4 +27,8 @@ defmodule Elide.Stat do
     |> cast(params, @required_fields, @optional_fields)
     |> validate_inclusion(:tag, @valid_tags)
   end
+
+  def get_tags do
+    @valid_tags
+  end
 end
