@@ -5,7 +5,7 @@ defmodule Elide.Stat do
     field :tag, :string
     field :value, :string
     field :count, :integer
-    field :visiting_interval, Ecto.DateTime
+    field :visiting_interval, Timex.Ecto.DateTime
     belongs_to :elink, Elide.Elink
 
     timestamps
@@ -26,5 +26,9 @@ defmodule Elide.Stat do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> validate_inclusion(:tag, @valid_tags)
+  end
+
+  def get_tags do
+    @valid_tags
   end
 end

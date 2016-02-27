@@ -4,6 +4,7 @@ defmodule Elide.StatServerTest do
   import Elide.TestHelpers
 
   alias Elide.{Repo, Stat, StatServer}
+  import Ecto.Query, only: [from: 2]
 
 
   setup do
@@ -12,19 +13,56 @@ defmodule Elide.StatServerTest do
     {:ok, elink: elink, domain: domain}
   end
 
+  test "save visiting interval by trimming min, sec and ms", %{elink: elink} do
+    date = Timex.Date.from({{2012, 10, 10}, {15, 40, 59, 0}})
+    StatServer.inc_elink_visit(
+    elink: elink, browser: "Chrome",
+    country: "MY", referrer: "http://example.com",
+    platform: "Mac", visited_at: date
+    )
+
+    stat = Repo.get_by(Stat, %{elink_id: elink.id, tag: "browser"})
+    assert stat.visiting_interval == Timex.Date.from({{2012, 10, 10}, {15, 0, 0, 0}})
+  end
+
+  test "use current time iv visited_at is not passed", %{elink: elink} do
+    StatServer.inc_elink_visit(
+    elink: elink, browser: "Chrome",
+    country: "MY", referrer: "http://example.com",
+    platform: "Mac"
+    )
+
+    stat = Repo.get_by(Stat, %{elink_id: elink.id, tag: "browser"})
+    assert stat.visiting_interval
+  end
+
+  test "increasing stat should create 4 records", %{elink: elink} do
+    date = Timex.Date.from({{2012, 10, 10}, {15, 40, 59, 0}})
+    StatServer.inc_elink_visit(
+    elink: elink, browser: "Chrome",
+    country: "MY", referrer: "http://example.com",
+    platform: "Mac", visited_at: date
+    )
+
+    elink_id = elink.id
+    q = from s in Stat, where: s.elink_id == ^elink_id
+    stat = Repo.all(q)
+    assert Enum.count(stat) == 4
+  end
+
   test "increase stat count in the same hour", %{elink: elink} do
     (1..10)
     |> Enum.each(fn(_) ->
-      StatServer.inc(
+      date = Timex.Date.from({{2013, 11, 1}, {11, 30, 59, 7}})
+      StatServer.inc_elink_visit(
         elink: elink, browser: "Chrome",
         country: "MY", referrer: "http://example.com",
-        platform: "Mac", visited_at: {{2012, 10, 10},{15,40,59, 0}}
+        platform: "Mac", visited_at: date
       )
     end)
     stat = Repo.get_by(Stat, %{elink_id: elink.id, tag: "browser"})
 
     assert stat.count == 10
-
   end
 end
 
