@@ -10,5 +10,4 @@ elide:
     env_file:
         - ./env
 postgres:
-    image: postgres:latest
-
+    image: postgres:9.5

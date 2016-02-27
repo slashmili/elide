@@ -1,7 +1,6 @@
-sudo: false
-language: elixir
+sudo: required
 elixir: 1.2.1
-addons:
-  - postgresql: "9.5"
-before_script:
-  - cp config/travis.exs config/test.exs
+services:
+  - docker
+script:
+  - docker-compose  run elide mix test
