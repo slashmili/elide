@@ -13,4 +13,15 @@ defmodule Elide.StatServer do
   end
 
   defp random_worker, do: :random.uniform(@pool_size)
+
+  def browser?(user_agent) do
+    cond do
+      String.contains?(user_agent, "Chrome") -> "Chrome"
+      String.contains?(user_agent, "Firefox") -> "Firefox"
+      String.contains?(user_agent, "Safari") -> "Safari"
+      String.contains?(user_agent, "Opera") -> "Opera"
+      String.contains?(user_agent, "MSIE") -> "IE"
+      true -> "Unknown"
+    end
+  end
 end
