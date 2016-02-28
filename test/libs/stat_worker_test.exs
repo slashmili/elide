@@ -15,6 +15,7 @@ defmodule Elide.StatWorkerTest do
     {:ok, elink: elink, domain: domain}
   end
 
+  @tag :require_pg96
   test "save visiting interval by trimming min, sec and ms", %{elink: elink} do
     date = Timex.Date.from({{2012, 10, 10}, {15, 40, 59, 0}})
 
@@ -30,6 +31,7 @@ defmodule Elide.StatWorkerTest do
     assert stat.visiting_interval == Timex.Date.from({{2012, 10, 10}, {15, 0, 0, 0}})
   end
 
+  @tag :require_pg96
   test "use current time iv visited_at is not passed", %{elink: elink} do
     visit_data = [
       elink: elink, browser: "Chrome",
@@ -43,6 +45,7 @@ defmodule Elide.StatWorkerTest do
     assert stat.visiting_interval
   end
 
+  @tag :require_pg96
   test "increasing stat should create 4 records", %{elink: elink} do
     date = Timex.Date.from({{2012, 10, 10}, {15, 40, 59, 0}})
     visit_data = [
@@ -60,6 +63,7 @@ defmodule Elide.StatWorkerTest do
     assert Enum.count(stat) == 4
   end
 
+  @tag :require_pg96
   test "increase stat count in the same hour", %{elink: elink} do
     (1..10)
     |> Enum.each(fn(i) ->

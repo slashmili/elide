@@ -12,6 +12,7 @@ defmodule Elide.StatServerTest do
     {:ok, elink: elink, domain: domain}
   end
 
+  @tag :require_pg96
   test "use current time if visited_at is not passed", %{elink: elink} do
     visit_data = [
       elink: elink, browser: "Chrome",
