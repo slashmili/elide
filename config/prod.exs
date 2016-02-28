@@ -20,6 +20,11 @@ config :elide, Elide.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :geolix,
+  databases: [
+    { :country, "/usr/share/GeoIP/GeoIP.dat" }
+  ]
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

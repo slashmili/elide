@@ -24,4 +24,11 @@ defmodule Elide.StatServer do
       true -> "Unknown"
     end
   end
+
+  def country?(ip) do
+    case Geolix.lookup(ip) do
+      %{country: nil} -> "Unknown"
+      %{country: country} -> country.country.iso_code
+    end
+  end
 end

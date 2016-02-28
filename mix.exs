@@ -22,7 +22,8 @@ defmodule Elide.Mixfile do
     [mod: {Elide, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex, :oauth2, :hashids, :connection,
-                    :con_cache, :json_web_token, :timex, :timex_ecto, :gproc]]
+                    :con_cache, :json_web_token, :timex, :timex_ecto, :gproc,
+                    :geolix]]
   end
 
   # Specifies which paths to compile per environment.
@@ -54,6 +55,7 @@ defmodule Elide.Mixfile do
      {:timex, "~> 1.0"},
      {:timex_ecto, "~> 0.9.0"},
      {:gproc, "~> 0.5.0"},
+     {:geolix, "~> 0.9.0"},
    ]
   end
 

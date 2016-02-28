@@ -52,4 +52,12 @@ defmodule Elide.StatServerTest do
     browser = StatServer.browser?(user_agent)
     assert browser == "Unknown"
   end
+
+  test "get country code from ip" do
+    assert StatServer.country?("61.6.17.231") == "MY"
+  end
+
+  test "get country code from private ip range" do
+    assert StatServer.country?("127.0.0.1") == ""
+  end
 end
