@@ -60,4 +60,29 @@ defmodule Elide.StatServerTest do
   test "get country code from private ip range" do
     assert StatServer.country?("127.0.0.1") == ""
   end
+
+  test "get OS from user agent" do
+    user_agent = "Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko"
+    assert StatServer.os?(user_agent) == "Windows"
+
+    user_agent = "Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/31.0"
+    assert StatServer.os?(user_agent) == "Linux"
+
+    user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10; rv:33.0) Gecko/20100101 Firefox/33.0"
+    assert StatServer.os?(user_agent) == "Macintosh"
+
+    user_agent = "curl/7.9.8 (i686-pc-linux-gnu) libcurl 7.9.8 (OpenSSL 0.9.6b)"
+    browser = StatServer.os?(user_agent)
+    assert browser == "Unknown"
+  end
+
+  test "get domain out of a referrer url" do
+    domain = "http://example.com/home?foo=bar"
+    assert StatServer.domain?(domain) == "example.com"
+  end
+
+  test "get empty value as referrer" do
+    domain = ""
+    assert StatServer.domain?(domain) == ""
+  end
 end

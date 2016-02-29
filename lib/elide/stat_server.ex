@@ -31,4 +31,21 @@ defmodule Elide.StatServer do
       %{country: country} -> country.country.iso_code
     end
   end
+
+  def os?(user_agent) do
+    cond do
+      String.contains?(user_agent, "Windows") -> "Windows"
+      String.contains?(user_agent, "Linux") -> "Linux"
+      String.contains?(user_agent, "Mac") -> "Macintosh"
+      true -> "Unknown"
+    end
+  end
+
+  def domain?(referrer) do
+    pattern = ~r/http(?:s)?:\/\/(?P<domain>(?:[\w-]+\.)*([\w-]{1,63})(?:\.(?:\w{3}|\w{2})))(?:$|\/)/i
+    case Regex.named_captures(pattern, referrer) do
+      %{"domain" => domain} -> domain
+      _ -> ""
+    end
+  end
 end
