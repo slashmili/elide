@@ -7,12 +7,13 @@ defmodule Elide.Stat do
     field :count, :integer
     field :visiting_interval, Timex.Ecto.DateTime
     belongs_to :elink, Elide.Elink
+    belongs_to :url, Elide.Url
 
     timestamps
   end
 
   @required_fields ~w(elink_id tag value count visiting_interval)
-  @optional_fields ~w()
+  @optional_fields ~w(url_id)
 
   @valid_tags ["browser", "referrer", "country", "platform"]
 

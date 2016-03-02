@@ -11,8 +11,9 @@ defmodule Elide.StatWorkerTest do
   setup do
     domain = insert_domain
     elink = insert_elink(domain_id: domain.id, elink_seq: 1)
+    url = insert_url(elink_id: elink.id, link: "http://#{get_uniqe_id}.com")
     {:ok, _} = StatWorker.start_link(@worker_id)
-    {:ok, elink: elink, domain: domain}
+    {:ok, elink: elink, domain: domain, url: url}
   end
 
   @tag :require_pg96
@@ -64,13 +65,14 @@ defmodule Elide.StatWorkerTest do
   end
 
   @tag :require_pg96
-  test "increase stat count in the same hour", %{elink: elink} do
+  test "increase stat count in the same hour", %{elink: elink, url: url} do
     (1..10)
     |> Enum.each(fn(i) ->
       date = Timex.Date.from({{2013, 11, 1}, {11, 30, i, 7}})
       visit_data = [
-        elink: elink, browser: "Chrome",
-        country: "MY", referrer: "http://example.com",
+        elink: elink, url: url,
+        browser: "Chrome", country: "MY",
+        referrer: "http://example.com",
         platform: "Mac", visited_at: date
       ]
       StatWorker.inc_elink_visit(@worker_id, visit_data)

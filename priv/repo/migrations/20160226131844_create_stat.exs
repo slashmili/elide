@@ -8,12 +8,13 @@ defmodule Elide.Repo.Migrations.CreateStat do
       add :value, :string
       add :count, :integer
       add :visiting_interval, :datetime
+      add :url_id, references(:urls, on_delete: :nothing)
       add :elink_id, references(:elinks, on_delete: :nothing)
 
       timestamps
     end
     create index(:stats, [:elink_id])
-    create index(:stats, [:elink_id, :tag, :value, :visiting_interval], unique: true)
+    create index(:stats, [:elink_id, :url_id, :tag, :value, :visiting_interval], unique: true)
   end
 
   def down do

@@ -1,5 +1,5 @@
 defmodule Elide.TestHelpers do
-  alias Elide.{Repo, User, Organization, Domain, Elink, Token}
+  alias Elide.{Repo, User, Organization, Domain, Elink, Url, Token}
 
   def get_uniqe_id() do
     Base.encode16(:crypto.rand_bytes(8))
@@ -56,4 +56,14 @@ defmodule Elide.TestHelpers do
     |> Token.changeset(changes)
     |> Repo.insert!
   end
+
+  def insert_url(attrs \\ %{}) do
+    changes = Dict.merge(%{
+    }, attrs)
+
+    %Url{}
+    |> Url.changeset(changes)
+    |> Repo.insert!
+  end
+
 end

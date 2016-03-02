@@ -2,7 +2,7 @@ defmodule Elide.QueryBuilder do
 
   def upsert_stats(fields) do
     table = :stats
-    unique_fields = [:elink_id, :tag, :value, :visiting_interval]
+    unique_fields = [:elink_id, :url_id, :tag, :value, :visiting_interval]
     values = "(" <> Enum.map_join(fields, ", ", &quote_name/1) <> ") " <>
                 "VALUES (" <> Enum.map_join(1..length(fields), ", ", &"$#{&1}") <> ")"
     upsert = " ON CONFLICT (#{Enum.join(unique_fields, ", ")}) DO UPDATE SET count = #{quote_table(table)}.count +1"

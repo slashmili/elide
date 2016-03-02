@@ -29,21 +29,22 @@ defmodule Elide.StatWorker do
     |> Enum.map(&String.to_atom(&1))
     |> Enum.filter(&(opts[&1] != nil))
     |> Enum.each(fn(tag) ->
-      inc_elink_stat_by_tag(opts[:elink], tag, opts[tag], visiting_interval)
+      inc_elink_stat_by_tag(opts[:elink], opts[:url], tag, opts[tag], visiting_interval)
     end)
     {:noreply, state}
   end
 
   def handle_call({:noop}, _, state), do: {:reply, :noop, state}
 
-  defp inc_elink_stat_by_tag(elink, tag, value, visiting_interval) do
+  defp inc_elink_stat_by_tag(elink, url, tag, value, visiting_interval) do
     created_at =
       Date.now
       |> to_tuple
 
     data = %{
-      elink_id: elink.id, tag: Atom.to_string(tag),
-      value: value, visiting_interval: visiting_interval,
+      elink_id: elink.id, url_id: url && url.id,
+      tag: Atom.to_string(tag), value: value,
+      visiting_interval: visiting_interval,
       inserted_at: created_at, updated_at: created_at,
       count: 1
     }
