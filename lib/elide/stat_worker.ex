@@ -11,6 +11,7 @@ defmodule Elide.StatWorker do
   end
 
   def inc_elink_visit(worker_id, opts) do
+    opts = Keyword.update(opts, :visited_at, Date.now, fn(visited_at) -> visited_at end)
     GenServer.cast(via_tuple(worker_id), {:inc_elink_visit, opts})
   end
 
@@ -20,7 +21,7 @@ defmodule Elide.StatWorker do
 
   def handle_cast({:inc_elink_visit, opts}, state) do
     visiting_interval =
-      (opts[:visited_at] || Date.now)
+      opts[:visited_at]
       |> reset_hour
       |> to_tuple
 
