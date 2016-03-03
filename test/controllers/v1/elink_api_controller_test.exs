@@ -11,16 +11,15 @@ defmodule Elide.Api.V1.ElinkControllerTest do
     {:ok, conn: conn, domain: domain}
   end
 
-  test "creates an elink through api", %{conn: conn, domain: domain} do
+  test "creates an elink through api", %{conn: conn} do
     url = unique_url
     json_params = %{
       "urls" => [url]
     }
     conn = post conn, elink_api_path(conn, :create, json_params)
 
-    assert json_response(conn, 201)
     elink_json = json_response(conn, 201)
-    assert elink_json["short_url"] =~ domain.domain
+    assert elink_json["short_url"] =~ "domain-"
     saved_url = Repo.get_by(Url, %{link: url})
     assert saved_url
   end

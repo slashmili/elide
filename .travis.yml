@@ -5,3 +5,5 @@ addons:
   - postgresql: "9.4"
 before_script:
   - cp config/travis.exs config/test.exs
+script:
+  - mix test --exclude require_pg96

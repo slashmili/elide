@@ -43,6 +43,7 @@ defmodule Elide.ElinkControllerTest do
     assert Repo.get_by(Url, %{link: url2})
   end
 
+  @tag :require_pg96
   test "create elink and visit short url", %{conn: conn} do
     url1 = "http://#{get_uniqe_id}.com"
     urls = %{"url_1" => url1}
@@ -52,8 +53,10 @@ defmodule Elide.ElinkControllerTest do
     saved_url1 = Repo.get_by(Url, %{link: url1}) |> Repo.preload(:elink)
 
 
+    conn = put_req_header(conn, "user-agent", "phoenix test")
     slug = Elink.slug(saved_url1.elink)
     conn = get conn, elink_path(conn, :go, slug)
+    :timer.sleep(10)
 
     assert get_resp_header(conn, "location") == [url1]
     assert conn.halted

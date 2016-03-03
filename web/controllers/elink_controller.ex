@@ -46,9 +46,48 @@ defmodule Elide.ElinkController do
   def go(conn, %{"slug" => slug}) do
     elink = ElinkServer.get_elink(slug)
     url = elink.urls |> Enum.shuffle |> List.first
+
     conn
+    |> inc_stat(elink)
     |> redirect(external: url.link)
     |> halt
+  end
+
+  defp inc_stat(conn, elink) do
+    browser =
+      conn
+      |> get_header("user-agent")
+      |> Elide.StatServer.browser?
+
+    os =
+      conn
+      |> get_header("user-agent")
+      |> Elide.StatServer.os?
+
+    referrer =
+      conn
+      |> get_header("referrer")
+      |> Elide.StatServer.domain?
+
+    visit_data = [
+      elink: elink, browser: browser,
+      country: Elide.StatServer.country?(conn.remote_ip), referrer: referrer,
+      platform: os
+    ]
+    Elide.StatServer.inc_elink_visit(visit_data)
+
+    conn
+  end
+
+  defp get_header(conn, key) do
+    header_tuple =
+      conn.req_headers
+      |> Enum.filter(&elem(&1, 0) == key)
+      |> List.first
+      case header_tuple do
+        nil -> ""
+        {key, value} -> value
+      end
   end
 
   defp get_domain(nil) do
