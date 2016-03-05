@@ -10,7 +10,7 @@ ENV PORT 4000
 
 ADD rel /opt
 
-ADD wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz -O /tmp/GeoIP.dat.gz \
+RUN wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz -O /tmp/GeoIP.dat.gz \
     && gunzip /tmp/GeoIP.dat.gz \
     && mkdir -p /usr/share/GeoIP \
     && mv /tmp/GeoIP.dat /usr/share/GeoIP
