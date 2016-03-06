@@ -29,6 +29,7 @@ defmodule Elide.StatServer do
     case Geolix.lookup(ip) do
       %{country: nil} -> ""
       %{country: country} -> country.country.iso_code
+      _ -> ""
     end
   end
 
