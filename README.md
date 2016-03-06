@@ -68,6 +68,7 @@ docker run -e --rm -p 4000:4000 elide-prod
 
 ### DB migration on production
 
+
 ```
 $ docker run -e --rm -p 4000:4000 elide-prod sh
 $ /opt/elide/bin/elide console
@@ -75,3 +76,10 @@ iex> mig_dir = "/opt/elide/lib/elide-0.0.1/priv/repo/migrations"
 iex> Ecto.Migrator.run(Elide.Repo, mig_dir, :up, [all: true])
 iex> Repo.insert!(%Domain{domain: "<your-domain.com>"})
 ```
+
+
+If you are running elide outside of docker:
+```
+/opt/elide/bin/elide rpc Elixir.Elide.Migration update
+```
+
