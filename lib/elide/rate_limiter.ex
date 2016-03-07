@@ -5,11 +5,11 @@ defmodule Elide.RateLimiter do
       iex> {:ok, cache} = RateLimiter.start_link(
       ...>   [api_rate_limit: 2, ttl: :timer.hours(1), ttl_check: :timer.minutes(1)])
       iex> RateLimiter.check_limit!("127.0.0.1", cache)
-      true
+      {:ok}
       iex> RateLimiter.check_limit!("127.0.0.1", cache)
-      true
+      {:ok}
       iex> RateLimiter.check_limit!("127.0.0.1", cache)
-      false
+      {:error, :reached_api_rate_limit}
   """
 
   @doc """
@@ -54,11 +54,20 @@ defmodule Elide.RateLimiter do
   given period of time
   """
   def check_limit!(limitation_key, pid) do
-    rate_limit(pid) >= inc(limitation_key, pid)
+    result = rate_limit(pid) >= inc(limitation_key, pid)
+    result
+    |> return_tuple
   end
 
   def check_limit!(limitation_key) do
     check_limit!(limitation_key, :elide_api_rate_limit)
+  end
+
+  defp return_tuple(true) do
+    {:ok}
+  end
+  defp return_tuple(false) do
+    {:error, :reached_api_rate_limit}
   end
 
   defp inc(limitation_key, pid) do
