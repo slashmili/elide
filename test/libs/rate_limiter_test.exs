@@ -11,10 +11,10 @@ defmodule Elide.RateLimiterTest do
       api_rate_limit: 1
     ])
 
-    assert RateLimiter.check_limit!({127, 0, 0, 1}, pid)
-    refute RateLimiter.check_limit!({127, 0, 0, 1}, pid)
+    assert RateLimiter.check_limit!({127, 0, 0, 1}, pid) == {:ok}
+    assert RateLimiter.check_limit!({127, 0, 0, 1}, pid) == {:error, :reached_api_rate_limit}
 
-    assert RateLimiter.check_limit!("127.0.0.2", pid)
+    assert RateLimiter.check_limit!("127.0.0.2", pid) == {:ok}
 
     pid |> RateLimiter.stop
   end
@@ -30,7 +30,7 @@ defmodule Elide.RateLimiterTest do
     #TODO: find a better way to simulate the time movement
     :timer.sleep(100)
     assert RateLimiter.check_limit!("127.0.0.1", pid), "Second access should be allowed"
-    refute RateLimiter.check_limit!("127.0.0.1", pid), "Third access in same time period should be denied"
+    refute RateLimiter.check_limit!("127.0.0.1", pid) == {:error}, "Third access in same time period should be denied"
     :timer.sleep(400)
     assert RateLimiter.check_limit!("127.0.0.1", pid), "Forth access happens in new time window shoud be allowed"
 

@@ -27,13 +27,19 @@ defmodule Elide.ElinkServer do
     #TODO: validate opts
     limit_per = opts[:limit_per]
     urls = opts[:urls]
-    cond do
-      ! RateLimiter.check_limit!(limit_per, api_limit_rate) ->
-        {:error, :reached_api_rate_limit}
-      has_invalid_url?(urls) ->
-        {:error, prepare_urls_changeset(urls)}
-      true ->
-        create_elink_in_db(opts)
+    steps = [
+      fn() -> RateLimiter.check_limit!(limit_per, api_limit_rate) end,
+      fn() -> has_invalid_url?(urls) end,
+      fn() -> create_elink_in_db(opts) end
+    ]
+    perform_steps(steps)
+  end
+
+  defp perform_steps([step_fun | remaining_steps]) do
+    case step_fun.() do
+      {:ok} -> perform_steps(remaining_steps)
+      {:ok, _} = ok -> ok
+      {:error, _} = error -> error
     end
   end
 
@@ -120,6 +126,9 @@ defmodule Elide.ElinkServer do
     all_valid = urls
     |> prepare_urls_changeset
     |> Enum.all?(&(&1.valid?))
-    !all_valid
+    case all_valid do
+      true -> {:ok}
+      false -> {:error, prepare_urls_changeset(urls)}
+    end
   end
 end
