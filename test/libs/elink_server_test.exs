@@ -80,13 +80,13 @@ defmodule Elide.ElinkServerTest do
   test "fetch an invalid elink" do
     fetched_elink = ElinkServer.get_elink("bo")
 
-    assert fetched_elink == {:error}
+    assert fetched_elink == {:error, :invalid_elink}
   end
 
   test "fetch non existence elink" do
     fetched_elink = ElinkServer.get_elink("1MtY2")
 
-    assert fetched_elink == {:error}
+    assert fetched_elink == {:error, :non_existence_elink}
   end
 
   test "allow anonymous users to create elink", %{domain: domain} do

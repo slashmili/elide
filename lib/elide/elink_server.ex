@@ -97,8 +97,8 @@ defmodule Elide.ElinkServer do
   @doc """
   Adds an elink to cache
   """
-  def set_elink({:error}) do
-    {:error}
+  def set_elink({:error, _} = error) do
+    error
   end
 
   def set_elink(elink) do
@@ -107,14 +107,16 @@ defmodule Elide.ElinkServer do
   end
 
   defp fetch_elink({:error}) do
-    {:error}
+    {:error, :invalid_elink}
   end
 
   defp fetch_elink(elink) do
-    elink
-    |> Repo.one
-    |> Repo.preload(:urls)
-    |> Repo.preload(:domain)
+    case Repo.one(elink) do
+      nil -> {:error, :non_existence_elink}
+      elink -> elink
+      |> Repo.preload(:urls)
+      |> Repo.preload(:domain)
+    end
   end
 
   def handle_call({:get_elink, slug}, _, state) do
