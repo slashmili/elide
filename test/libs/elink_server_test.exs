@@ -77,6 +77,12 @@ defmodule Elide.ElinkServerTest do
       "elink should be cached already and new changes in db shouldn't effect the cached value"
   end
 
+  test "fetch an invalid elink" do
+    fetched_elink = ElinkServer.get_elink("bo")
+
+    assert fetched_elink == {:error}
+  end
+
   test "allow anonymous users to create elink", %{domain: domain} do
     foobar_dot_com = "http://foobar.com"
     urls = [foobar_dot_com]
