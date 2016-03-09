@@ -83,6 +83,12 @@ defmodule Elide.ElinkServerTest do
     assert fetched_elink == {:error}
   end
 
+  test "fetch non existence elink" do
+    fetched_elink = ElinkServer.get_elink("1MtY2")
+
+    assert fetched_elink == {:error}
+  end
+
   test "allow anonymous users to create elink", %{domain: domain} do
     foobar_dot_com = "http://foobar.com"
     urls = [foobar_dot_com]
