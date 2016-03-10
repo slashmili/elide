@@ -90,7 +90,7 @@ defmodule Elide.ElinkServer do
         |> Elink.by_slug
         |> fetch_elink
         |> set_elink
-      elink -> elink
+      elink -> {:ok, elink}
     end
   end
 
@@ -103,7 +103,7 @@ defmodule Elide.ElinkServer do
 
   def set_elink(elink) do
     GenServer.cast(__MODULE__, {:set_elink, elink})
-    elink
+    {:ok, elink}
   end
 
   defp fetch_elink({:error}) do

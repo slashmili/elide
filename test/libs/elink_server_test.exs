@@ -45,7 +45,7 @@ defmodule Elide.ElinkServerTest do
     )
 
     slug = Elink.slug(elink)
-    fetched_elink = ElinkServer.get_elink(slug)
+    {:ok, fetched_elink} = ElinkServer.get_elink(slug)
 
     assert elink.id == fetched_elink.id
   end
@@ -60,7 +60,7 @@ defmodule Elide.ElinkServerTest do
     )
 
     slug = Elink.slug(elink)
-    fetched_elink = ElinkServer.get_elink(slug)
+    {:ok, fetched_elink} = ElinkServer.get_elink(slug)
 
     assert elink.id == fetched_elink.id
 
@@ -69,7 +69,7 @@ defmodule Elide.ElinkServerTest do
     |> Url.changeset(%{link: "http://bar.com"})
     |> Repo.update
 
-    fetch_elink_again = ElinkServer.get_elink(slug)
+    {:ok, fetch_elink_again} = ElinkServer.get_elink(slug)
 
     cached_url = fetch_elink_again.urls |> List.first
 
@@ -78,15 +78,15 @@ defmodule Elide.ElinkServerTest do
   end
 
   test "fetch an invalid elink" do
-    fetched_elink = ElinkServer.get_elink("bo")
+    {:error, error} = ElinkServer.get_elink("bo")
 
-    assert fetched_elink == {:error, :invalid_elink}
+    assert error == :invalid_elink
   end
 
   test "fetch non existence elink" do
-    fetched_elink = ElinkServer.get_elink("1MtY2")
+    {:error, error} = ElinkServer.get_elink("1MtY2")
 
-    assert fetched_elink == {:error, :non_existence_elink}
+    assert error == :non_existence_elink
   end
 
   test "allow anonymous users to create elink", %{domain: domain} do

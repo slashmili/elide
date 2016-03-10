@@ -56,7 +56,7 @@ defmodule Elide.ElinkController do
     |> halt
   end
 
-  defp redirect_to_url(elink, conn) do
+  defp redirect_to_url({:ok, elink}, conn) do
     url = elink.urls |> Enum.shuffle |> List.first
     conn
     |> inc_stat(elink)
