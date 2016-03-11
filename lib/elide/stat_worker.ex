@@ -54,8 +54,8 @@ defmodule Elide.StatWorker do
   end
 
   defp to_tuple(%DateTime{} = date) do
-    %DateTime{year: y, month: m, day: d, hour: h, minute: min, second: s, ms: ms} = date
-    {{y, m, d}, {h, min, s, round(ms * 1_000)}}
+    %DateTime{year: y, month: m, day: d, hour: h, minute: minute, second: s, ms: ms} = date
+    {{y, m, d}, {h, minute, s, round(ms * 1_000)}}
   end
 
   defp reset_hour(%DateTime{} = date) do

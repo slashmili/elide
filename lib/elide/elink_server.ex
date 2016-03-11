@@ -139,7 +139,7 @@ defmodule Elide.ElinkServer do
     |> Enum.all?(&(&1.valid?))
     case all_valid do
       true -> {:ok}
-      false -> {:error, prepare_urls_changeset(urls)}
+      _ -> {:error, prepare_urls_changeset(urls)}
     end
   end
 end
