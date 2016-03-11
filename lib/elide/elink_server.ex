@@ -86,26 +86,37 @@ defmodule Elide.ElinkServer do
   def get_elink(slug) do
     case GenServer.call(__MODULE__, {:get_elink, slug}) do
       nil ->
-        elink = fetch_elink(slug)
-        set_elink(elink)
-      elink -> elink
+        slug
+        |> Elink.by_slug
+        |> fetch_elink
+        |> set_elink
+      elink -> {:ok, elink}
     end
   end
 
   @doc """
   Adds an elink to cache
   """
-  def set_elink(elink) do
-    GenServer.cast(__MODULE__, {:set_elink, elink})
-    elink
+  def set_elink({:error, _} = error) do
+    error
   end
 
-  defp fetch_elink(slug) do
-    slug
-    |> Elink.by_slug
-    |> Repo.one
-    |> Repo.preload(:urls)
-    |> Repo.preload(:domain)
+  def set_elink(elink) do
+    GenServer.cast(__MODULE__, {:set_elink, elink})
+    {:ok, elink}
+  end
+
+  defp fetch_elink({:error}) do
+    {:error, :invalid_elink}
+  end
+
+  defp fetch_elink(elink) do
+    case Repo.one(elink) do
+      nil -> {:error, :non_existence_elink}
+      elink -> elink
+      |> Repo.preload(:urls)
+      |> Repo.preload(:domain)
+    end
   end
 
   def handle_call({:get_elink, slug}, _, state) do

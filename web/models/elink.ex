@@ -40,11 +40,13 @@ defmodule Elide.Elink do
   This query should return only one `Elink` item
   """
   def by_slug(my_slug) do
-    details = get_details_by_slug(my_slug)
-    domain_id = details[:domain_id]
-    elink_seq = details[:elink_seq]
-    from e in __MODULE__,
-      where: e.domain_id == ^domain_id and e.elink_seq == ^elink_seq
+    case get_details_by_slug(my_slug) do
+      {:error} -> {:error}
+      details -> domain_id = details[:domain_id]
+          elink_seq = details[:elink_seq]
+          from e in __MODULE__,
+          where: e.domain_id == ^domain_id and e.elink_seq == ^elink_seq
+    end
   end
 
   @doc """
@@ -56,8 +58,10 @@ defmodule Elide.Elink do
 
   def get_details_by_slug(my_slug) do
     s = Hashids.new(min_len: 1, salt: salt)
-    {:ok, [domain_id, elink_seq]} = Hashids.decode(s, my_slug)
-    [domain_id: domain_id, elink_seq: elink_seq]
+    case Hashids.decode(s, my_slug) do
+      {:ok, [domain_id, elink_seq]} -> [domain_id: domain_id, elink_seq: elink_seq]
+      _ -> {:error}
+    end
   end
 
   def salt do

@@ -14,3 +14,5 @@ build-doc:
 	mix docs
 	cp -r doc/* gh-pages
 	cd gh-pages && git add . && git commit -m "Docs updated at $$(date  +'%Y-%m-%d %H:%M:%S')"
+
+.PHONY: build-prod build-img test build-doc

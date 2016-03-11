@@ -61,4 +61,9 @@ defmodule Elide.ElinkControllerTest do
     assert get_resp_header(conn, "location") == [url1]
     assert conn.halted
   end
+
+  test "visit a short url with invalid slug", %{conn: conn} do
+    conn = get conn, elink_path(conn, :go, "ba")
+    assert html_response(conn, 404)
+  end
 end

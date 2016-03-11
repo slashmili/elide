@@ -44,9 +44,20 @@ defmodule Elide.ElinkController do
   end
 
   def go(conn, %{"slug" => slug}) do
-    elink = ElinkServer.get_elink(slug)
-    url = elink.urls |> Enum.shuffle |> List.first
+    slug
+    |> ElinkServer.get_elink
+    |> redirect_to_url(conn)
+  end
 
+  defp redirect_to_url({:error, _}, conn) do
+    conn
+    |> put_status(404)
+    |> render(Elide.ErrorView, "404.html")
+    |> halt
+  end
+
+  defp redirect_to_url({:ok, elink}, conn) do
+    url = elink.urls |> Enum.shuffle |> List.first
     conn
     |> inc_stat(elink)
     |> redirect(external: url.link)
