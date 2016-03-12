@@ -1,4 +1,8 @@
 defmodule Elide.Elink do
+  @moduledoc """
+  This module connects shorten url to users links
+  """
+
   use Elide.Web, :model
 
   schema "elinks" do

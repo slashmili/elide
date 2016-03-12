@@ -1,4 +1,8 @@
 defmodule Elide.Token do
+  @moduledoc """
+  This module is keeping users api token
+  """
+
   use Elide.Web, :model
 
   schema "tokens" do

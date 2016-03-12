@@ -1,4 +1,8 @@
 defmodule Elide.StatWorker do
+  @moduledoc """
+  This module is queuing up the stats and insert the stats into db
+  """
+
   use GenServer
   use Timex
 

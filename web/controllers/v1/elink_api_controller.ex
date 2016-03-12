@@ -1,4 +1,8 @@
 defmodule Elide.V1.ElinkApiController do
+  @moduledoc """
+  API interface to Elide's shorten url service
+  """
+
   use Elide.Web, :controller
 
   alias Elide.{Elink, Domain, ElinkServer, Token}
