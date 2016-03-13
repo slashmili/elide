@@ -26,7 +26,7 @@ defmodule Elide.HomeChannel do
   end
 
   defp create_elink_response({:ok, elink}, socket) do
-    elink =
+    {:ok, elink} =
       elink
       |> Elink.slug
       |> ElinkServer.get_elink
