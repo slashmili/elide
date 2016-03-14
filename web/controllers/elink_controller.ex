@@ -59,12 +59,12 @@ defmodule Elide.ElinkController do
   defp redirect_to_url({:ok, elink}, conn) do
     url = elink.urls |> Enum.shuffle |> List.first
     conn
-    |> inc_stat(elink)
+    |> inc_stat(elink, url)
     |> redirect(external: url.link)
     |> halt
   end
 
-  defp inc_stat(conn, elink) do
+  defp inc_stat(conn, elink, url) do
     browser =
       conn
       |> get_header("user-agent")
@@ -81,7 +81,7 @@ defmodule Elide.ElinkController do
       |> Elide.StatServer.domain?
 
     visit_data = [
-      elink: elink, browser: browser,
+      elink: elink, url: url, browser: browser,
       country: Elide.StatServer.country?(conn.remote_ip), referrer: referrer,
       platform: os
     ]
