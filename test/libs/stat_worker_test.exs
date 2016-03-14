@@ -33,7 +33,7 @@ defmodule Elide.StatWorkerTest do
   end
 
   @tag :require_pg96
-  test "use current time iv visited_at is not passed", %{elink: elink} do
+  test "use current time if visited_at is not passed", %{elink: elink} do
     visit_data = [
       elink: elink, browser: "Chrome",
       country: "MY", referrer: "http://example.com",
