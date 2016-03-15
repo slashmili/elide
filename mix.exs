@@ -56,6 +56,7 @@ defmodule Elide.Mixfile do
      {:timex_ecto, "~> 0.9.0"},
      {:gproc, "~> 0.5.0"},
      {:geolix, "~> 0.9.0"},
+     {:ex_guard, git: "https://github.com/slashmili/ex_guard.git", only: :dev},
    ]
   end
 

@@ -12,6 +12,7 @@
   "ecto": {:hex, :ecto, "1.1.1"},
   "erlware_commons": {:hex, :erlware_commons, "0.15.0"},
   "ex_doc": {:hex, :ex_doc, "0.11.4"},
+  "ex_guard": {:git, "https://github.com/slashmili/ex_guard.git", "4161017ff0a772e8b5b64acb442846cbabcbc0cf", []},
   "exactor": {:hex, :exactor, "2.2.0"},
   "exrm": {:hex, :exrm, "1.0.0-rc7"},
   "fs": {:hex, :fs, "0.9.2"},
