@@ -77,7 +77,7 @@ defmodule Elide.ElinkController do
 
     referrer =
       conn
-      |> get_header("referrer")
+      |> get_header("referer")
       |> Elide.StatServer.domain?
 
     visit_data = [
