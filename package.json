@@ -9,7 +9,7 @@
     "javascript-brunch": ">= 1.0 < 1.8",
     "uglify-js-brunch": ">= 1.0 < 1.8",
     "bootstrap": ">= 3.3.6",
-    "jquery" : "2.2.0",
+    "jquery" : "3.0.0",
     "sass-brunch": "2.0.0",
     "clipboard": "1.5.5",
     "font-awesome": "4.5.0",
